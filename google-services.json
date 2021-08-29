@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "24047731276",
+    "project_id": "what-can-i-eat-6280c",
+    "storage_bucket": "what-can-i-eat-6280c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24047731276:android:e7deee77b7ff0e94d2eae9",
+        "android_client_info": {
+          "package_name": "nz.ac.wgtn.swen325.a2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24047731276-i8klqqq508i6ride3svb4nb9jvq8uhi8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_eT7_rLLEFJ7iRs1GKot2U0HCIaTdbt4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24047731276-i8klqqq508i6ride3svb4nb9jvq8uhi8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
