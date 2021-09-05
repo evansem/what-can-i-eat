@@ -4,6 +4,9 @@ import { Formik, Form } from 'formik';
 import { global_style, primaryColor } from '../style';
 import CheckBox from '@react-native-community/checkbox';
 import * as FileSystem from 'expo-file-system';
+//Expo file system creates a separate storage space for each app
+
+//Load the possible dietry tags for the source code directory
 const DietData = require('../assets/diet.json')
 
 //const global_style = require('../style');
@@ -16,6 +19,10 @@ function verifyAck(value) {
     return error;
 }
 
+/**
+ * Creates the page which allows users to update the dietry preferences
+ * Designed in the old-fashion class styled to better handle the state of multiple checkboxes
+ */
 export default class Preferences extends Component {
     constructor(props){
         super(props)
@@ -27,12 +34,13 @@ export default class Preferences extends Component {
             filename: `${FileSystem.documentDirectory}preferences`
         }
 
-        //Load preferences
+        //Load preferences from local storage
         FileSystem.readAsStringAsync(this.state.filename)
         .then(storedPreferences => {
             this.state.data = JSON.parse(storedPreferences)
             //console.log("On load: "+JSON.stringify(this.state.data))
             
+            //Since this is a promise once the file has been loaded we need to re-render the checkboxes
             this.forceUpdate()
         })
         .catch(error => {
@@ -43,7 +51,9 @@ export default class Preferences extends Component {
         })
     }
 
-    
+    /**
+     * On submit of the form cache updated dietry data to disk
+     */
     getSelectedDiet() {
         var Selected = []
         var keys = this.state.data.map((t) => t.key )
@@ -53,14 +63,18 @@ export default class Preferences extends Component {
                 Selected.push(keys[index])
             }            
         }
-        // Keep an handy clear list of the selected options
+        //Keep an handy clear list of the selected options
         this.state.selected = Selected
 
-        
+        //Chace the updated data locally
         FileSystem.writeAsStringAsync(this.state.filename, JSON.stringify(this.state.data))
     }
 
-    onchecked(id){
+    /**
+     * Keep data in sync when toggling a given checkbox on and off
+     * @param {number} id indicates the checkbox which have been clicked
+     */
+    toggleCheckbox(id){
         const data = this.state.data
         const index = this.state.data.findIndex(x => x.id === id);
         data[index].checked = !data[index].checked
@@ -68,21 +82,28 @@ export default class Preferences extends Component {
         console.log("On checked: "+JSON.stringify(this.state.data))
     }
 
+    /**
+     * Generates a form made of checkboxes
+     * @returns a sequence of checkboxes created based on the dietry data currently loaded
+     */
     renderDiet() {
-        console.log("On render: "+JSON.stringify(this.state.data))
-    //const renderDiet = () => {
+        //console.log("On render: "+JSON.stringify(this.state.data))
+
         return this.state.data.map((item, key) =>{
             return (
                 <TouchableOpacity style={{ flexDirection: "row"}}
-                key={key} onPress={() => this.onchecked(item.id)}>
-                    <CheckBox value={item.checked} onValueChange={() => {this.onchecked(item.id)}}/>
+                key={key} onPress={() => this.toggleCheckbox(item.id)}>
+                    <CheckBox value={item.checked} onValueChange={() => {this.toggleCheckbox(item.id)}}/>
                     <Text>{item.key}</Text>
                 </TouchableOpacity>
             )
         })
     }
 
-
+    /**
+     * Main method to organize the content of this page
+     * @returns the components displyed in this page
+     */
     render() {
         return (
             <SafeAreaView style={styles.container}>
@@ -122,134 +143,3 @@ const styles = StyleSheet.create({
         margin: 40,
     },
 });
-
-    // const [dietRequirements, setDiet] = useState(
-    //     {
-    //         vegeterian: false,
-    //         egg_free: false,
-    //         peanut_free: false,
-    //         gluten_free: false,
-    //         dairy_free: false,
-    //         pescatarian: false,
-    //         vegan: false,
-    //         acknowledged: false,
-    //     }
-    // );
-    
-//     const inputsHandler = (name) =>{
-//         setDiet( {...dietRequirements, [name]: !dietRequirements[name]} )
-//     }
-
-//     return (
-//         <SafeAreaView style={styles.container}>
-//             <ScrollView>
-        
-//                 <Text>
-//                     Select all tags apporiate for your diet
-//                 </Text>
-//                 <Text>
-//                     Your diet requirements can be changed any time, through the menu in preferences.
-//                     When ordering remember to always ask the waiter to add the allergens as a special note in the order",
-//                 </Text>
-//                 <View style={styles.checkboxContainer}>
-//                     <Text>
-//                         <CheckBox
-//                             boxType="square" value={dietRequirements.vegeterian}
-//                             name="vegeterian" onChange={inputsHandler("vegeterian")}
-//                             />
-//                         Vegeterian
-//                     </Text>
-//                     <Text>
-//                         <CheckBox 
-//                             boxType="square" value={dietRequirements.egg_free}
-//                             name="egg_free" onChange={inputsHandler}/>
-//                         Egg free
-//                     </Text>
-//                     {/* <Text>
-//                         <CheckBox type="checkbox" name="peanut_free" />
-//                         Peanut free
-//                     </Text>
-//                     <Text>
-//                         <CheckBox type="checkbox" name="gluten_free" />
-//                         Gluten free
-//                     </Text>
-//                     <Text>
-//                         <CheckBox type="checkbox" name="dairy_free" />
-//                         Dairy free
-//                     </Text>
-//                     <Text>
-//                         <CheckBox type="checkbox" name="pescatarian" />
-//                         Pescatarian
-//                     </Text>
-//                     <Text>
-//                         <CheckBox type="checkbox" name="vegan" />
-//                         Vegan
-//                     </Text> */}
-
-//                 </View>
-//                 {/* <Text>
-//                     <CheckBox type="checkbox" name="acknowledged" validate={verifyAck} />
-//                     {errors.acknowledged && touched.acknowledged &&
-//                         <Text style={global_style.error_msg}>{errors.acknowledged} </Text>}
-
-//                     I acknowledge I will take the responsibility of asking the waiter for confirmation
-
-//                     <Text style={global_style.error_msg}>*</Text>
-//                 </Text>
-//                 <Button
-//                     onPress={handleSubmit} title="Submit"
-//                     color={primaryColor} /> */}
-
-//                 {/* <Pressable onPress={handleSubmit} style={styles.primary_button}>
-//                             <Text>Submit</Text>
-//                             </Pressable> */}
-//             </ScrollView>
-//         </SafeAreaView>
-//     );
-
-// }
-
-
-
-// export default Preferences
-
-// {/* 
-
-//             <Formik
-//                 initialValues={{
-//                     vegeterian: false,
-//                     egg_free: false, 
-//                     peanut_free: false,
-//                     gluten_free: false,
-//                     dairy_free: false,
-//                     pescatarian: false,
-//                     vegan: false,
-//                     acknowledged: false,
-//                 }}
-//                 onSubmit={(values) => {
-//                     console.log(values)
-//                 }}
-//                 >
-//                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValidating }) => (
-                    
-            
-//     const [inputField , setInputField] = useState(
-//         {
-//             vegeterian: false,
-//             vegan: false,
-//             egg_free: false, 
-//             peanuts_free: false,
-//             gluten_free: false,
-//             dairy_free: false,
-//             pescatarian: false
-//         }
-//     );
-            
-//             <CheckBox
-//                 value={isSelected}
-//                 onValueChange={setSelection}
-//                 style={styles.checkbox}
-//             />
-//             <Text style={styles.label}>Do you like React Native?</Text>
-           
-//             <Text>Is CheckBox selected: {isSelected ? "👍" : "👎"}</Text> */}
