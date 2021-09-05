@@ -79,7 +79,7 @@ export default class Preferences extends Component {
         const index = this.state.data.findIndex(x => x.id === id);
         data[index].checked = !data[index].checked
         this.setState(data)
-        console.log("On checked: "+JSON.stringify(this.state.data))
+        //console.log("On checked: "+JSON.stringify(this.state.data))
     }
 
     /**
