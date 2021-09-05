@@ -1,0 +1,42 @@
+[
+    {
+        "id":0,
+        "key": "Vegetarian",
+        "checked": false
+    },
+    {
+        "id":1,
+        "key": "Peanut free",
+        "checked": false
+    },
+    {
+        "id":2,
+        "key": "Egg free",
+        "checked": false
+    },
+    {
+        "id":3,
+        "key": "Dairy free",
+        "checked": false
+    },
+    {
+        "id":4,
+        "key": "Gluten free",
+        "checked": false
+    },
+    {
+        "id":5,
+        "key": "Pescatarian",
+        "checked": false
+    },
+    {
+        "id":6,
+        "key": "Vegan",
+        "checked": false
+    },
+    {
+        "id":7,
+        "key": "Acknowledged",
+        "checked": false
+    }
+]

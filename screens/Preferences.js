@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TouchableOpac
 import { Formik, Form } from 'formik';
 import { global_style, primaryColor } from '../style';
 import CheckBox from '@react-native-community/checkbox';
+import * as FileSystem from 'expo-file-system';
 const DietData = require('../assets/diet.json')
 
 //const global_style = require('../style');
@@ -19,9 +20,46 @@ export default class Preferences extends Component {
     constructor(props){
         super(props)
         this.state = {
+            //The checkbox data is stored in the diet json file
             data: DietData,
-            selected: []
+            //This field will store the selected options
+            selected: [],
+            filename: `${FileSystem.documentDirectory}preferences`
         }
+
+        //Load preferences
+        FileSystem.readAsStringAsync(this.state.filename)
+        .then(storedPreferences => {
+            this.state.selected = JSON.parse(storedPreferences)
+            console.log("On load"+this.state.selected)
+        })
+        .catch(error => {
+            console.error(error)
+        })
+    }
+
+    
+    getSelectedDiet() {
+        var Selected = []
+        var keys = this.state.data.map((t) => t.key )
+        var checks = this.state.data.map((t) => t.checked)
+        for (let index = 0; index < checks.length; index++) {
+            if(checks[index] == true){
+                Selected.push(keys[index])
+            }            
+        }
+
+        //this.state.selected = Selected
+
+        
+
+        FileSystem.writeAsStringAsync(this.state.filename, JSON.stringify(Selected))
+
+        // FileSystem.readAsStringAsync(this.state.filename)
+        // .then(storedPreferences => console.log(JSON.parse(storedPreferences)))
+        
+        console.log(Selected)
+        console.log(this.state.selected)
     }
 
     onchecked(id){
@@ -44,30 +82,46 @@ export default class Preferences extends Component {
         })
     }
 
-    getSelectedDiet() {
-        var keys = this.state.data.map((t) => t.key )
-        var checks = this.state.data.map((t) => t.checked)
-        let Selected = []
-        for (let index = 0; index < checks.length; index++) {
-            if(checks[index] == true){
-                Selected.push(keys[index])
-            }            
-        }
-        alert(Selected)
-        console.log(Selected)
-    }
 
     render() {
         return (
-            <View>
-                {this.renderDiet()}
+            <SafeAreaView style={styles.container}>
+                <ScrollView>     
+                    <Text>
+                        Select all tags apporiate for your diet
+                    </Text>
+                    <Text>
+                        Your diet requirements can be changed any time, through the menu in preferences.
+                        When ordering remember to always ask the waiter to add the allergens as a special note in the order",
+                    </Text>
+                    <View style={styles.checkboxContainer}>
+                        {this.renderDiet()}
+                    </View>
+                    <Text>
+                        I acknowledge I will take the responsibility of asking the waiter for confirmation
+                    </Text>
+                    <Button onPress={this.getSelectedDiet()} title="Submit" color={primaryColor} />
 
-                <Button onPress={this.getSelectedDiet()} title="Submit" color={primaryColor} />
-
-            </View>
+                    <Text></Text>
+                </ScrollView>
+            </SafeAreaView>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        margin: 40,
+        fontSize: 18,
+        alignItems: "center",
+    },
+    checkboxContainer: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "space-evenly",
+        margin: 40,
+    },
+});
 
     // const [dietRequirements, setDiet] = useState(
     //     {
@@ -155,19 +209,7 @@ export default class Preferences extends Component {
 
 // }
 
-// const styles = StyleSheet.create({
-//     container: {
-//         margin: 40,
-//         fontSize: 18,
-//         alignItems: "center",
-//     },
-//     checkboxContainer: {
-//         flex: 1,
-//         flexDirection: "column",
-//         justifyContent: "space-evenly",
-//         margin: 40,
-//     },
-// });
+
 
 // export default Preferences
 
