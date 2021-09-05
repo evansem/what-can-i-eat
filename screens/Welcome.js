@@ -47,14 +47,9 @@ const styles = StyleSheet.create({
   title: {
     justifyContent: 'space-between',
     fontSize: 30,
-    lineHeight: 21,
-    //margin:90
-    //fontWeight: 'bold',
   },
   text: {
     fontSize: 18,
-    lineHeight: 21,
-    //fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
   },

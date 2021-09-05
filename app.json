@@ -22,7 +22,7 @@
     "android": {
       "package": "nz.ac.wgtn.swen325.a2",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
       }
     },
