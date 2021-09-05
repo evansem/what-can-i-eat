@@ -30,11 +30,16 @@ export default class Preferences extends Component {
         //Load preferences
         FileSystem.readAsStringAsync(this.state.filename)
         .then(storedPreferences => {
-            this.state.selected = JSON.parse(storedPreferences)
-            console.log("On load"+this.state.selected)
+            this.state.data = JSON.parse(storedPreferences)
+            //console.log("On load: "+JSON.stringify(this.state.data))
+            
+            this.forceUpdate()
         })
         .catch(error => {
-            console.error(error)
+            //This will always be triggered the real first time the page is opened
+            //As the file will not yet be into the app's file system
+            console.log("Initial Setup")
+            // console.error(error)
         })
     }
 
@@ -48,28 +53,23 @@ export default class Preferences extends Component {
                 Selected.push(keys[index])
             }            
         }
-
-        //this.state.selected = Selected
+        // Keep an handy clear list of the selected options
+        this.state.selected = Selected
 
         
-
-        FileSystem.writeAsStringAsync(this.state.filename, JSON.stringify(Selected))
-
-        // FileSystem.readAsStringAsync(this.state.filename)
-        // .then(storedPreferences => console.log(JSON.parse(storedPreferences)))
-        
-        console.log(Selected)
-        console.log(this.state.selected)
+        FileSystem.writeAsStringAsync(this.state.filename, JSON.stringify(this.state.data))
     }
 
     onchecked(id){
         const data = this.state.data
-        const index = data.findIndex(x => x.id === id);
+        const index = this.state.data.findIndex(x => x.id === id);
         data[index].checked = !data[index].checked
         this.setState(data)
+        console.log("On checked: "+JSON.stringify(this.state.data))
     }
 
     renderDiet() {
+        console.log("On render: "+JSON.stringify(this.state.data))
     //const renderDiet = () => {
         return this.state.data.map((item, key) =>{
             return (
