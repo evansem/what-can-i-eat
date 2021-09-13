@@ -1,21 +1,17 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import firebase from 'firebase/app'
+import React, { useState } from 'react';
+import {  StyleSheet, TextInput, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import firebase from 'firebase/app';
+import { global_style, primaryColor, secondaryColor } from '../style';
 
-const AddMenu = () => {
+const Separator = () => <View style={global_style.separator} />;
+
+const AddMenu = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  //state = { email: '', password: '', errorMessage: '', loading: false };
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBMyVA_URwEDHHTgmuVUPg09Wg727OU0Qk",
-    authDomain: "what-can-i-eat-6280c.firebaseapp.com",
-    databaseURL: "https://what-can-i-eat-6280c-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "what-can-i-eat-6280c",
-    storageBucket: "what-can-i-eat-6280c.appspot.com",
-    messagingSenderId: "24047731276",
-    appId: "1:24047731276:web:898c491369ab917fd2eae9",
-    measurementId: "G-NJP5VS871B"
-  };
 
-  firebase.initializeApp(firebaseConfig);
+  //firebase.initializeApp(firebaseConfig);
 
   // Listen for authentication state to change.
 firebase.auth().onAuthStateChanged(user => {
@@ -26,17 +22,20 @@ firebase.auth().onAuthStateChanged(user => {
   // Do other things
 });
 
+
 async function signInWithEmail() {
   await firebase
     .auth()
-    .signInWithEmailAndPassword(this.state.email, this.state.password)
+    .signInWithEmailAndPassword(email, password)
     .then(this.onLoginSuccess.bind(this))
     .catch(error => {
+        console.log("CATCHNG");
         let errorCode = error.code;
         let errorMessage = error.message;
         if (errorCode == 'auth/weak-password') {
             this.onLoginFailure.bind(this)('Weak Password!');
         } else {
+            console.log("Err coming")
             this.onLoginFailure.bind(this)(errorMessage);
         }
     });
@@ -44,68 +43,49 @@ async function signInWithEmail() {
 
 
     return (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-        }}
-      >
         <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView style={styles.container} behavior="padding">
-            <Text style={{ fontSize: 32, fontWeight: "700", color: "gray" }}>
-              App Name
+            <Text style={{ fontSize: 32, fontWeight: "700"}}>
+              Sign In
             </Text>
-            <View style={styles.form}>
+            <View style={global_style.textForm}>
               <TextInput
-                style={styles.input}
+                style={global_style.inputBox}
                 placeholder="Email"
                 placeholderTextColor="#B1B1B1"
                 returnKeyType="next"
-                keyboardType="email-address"
-                textContentType="emailAddress"
-                value={this.state.email}
-                onChangeText={email => this.setState({ email })}
+                //keyboardType="email-address"
+                // textContentType="emailAddress"
+                value={email}
+                onChangeText={newEmail => setEmail(newEmail)}
               />
               <TextInput
-                style={styles.input}
+                style={global_style.inputBox}
                 placeholder="Password"
                 placeholderTextColor="#B1B1B1"
                 returnKeyType="done"
                 textContentType="newPassword"
                 secureTextEntry={true}
-                value={this.state.password}
-                onChangeText={password => this.setState({ password })}
+                value={password}
+                onChangeText={p => setPassword(p)}
               />
-            </View>
-            {this.renderLoading()}
-            <Text
-              style={{
-                fontSize: 18,
-                textAlign: "center",
-                color: "red",
-                width: "80%"
-              }}
-            >
-              {this.state.error}
-            </Text>
-            <TouchableOpacity
-              style={{ width: '86%', marginTop: 10 }}
-              onPress={() => this.signInWithEmail()}>
-                  <Text>Sign In</Text>
-            </TouchableOpacity>
-            <View style={{ marginTop: 10 }}>
+            
+              {/* {this.renderLoading()} */}
               <Text
-                style={{ fontWeight: "200", fontSize: 17, textAlign: "center" }}
-                onPress={() => {
-                  alert("Urra! welcome")
-                  //this.props.navigation.navigate("SignUp");
+                style={{
+                  fontSize: 18,
+                  textAlign: "center",
+                  color: "red",
+                  width: "80%"
                 }}
               >
-                Don't have an Account?
+                {/* {this.state.error} */}
               </Text>
+              <Button onPress={() => signInWithEmail()} title="Submit" color={primaryColor} />
+              <Separator />
+              <Button onPress={() => navigation.navigate("Restaurant Signup")} 
+              title="Don't have an Account?" color={secondaryColor} />
             </View>
-          </KeyboardAvoidingView>
         </SafeAreaView>
-      </TouchableWithoutFeedback>
       // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       //   <Button
       //     onPress={() => alert("Not Available")}
@@ -119,5 +99,26 @@ async function signInWithEmail() {
       // </View>
     );
   }
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: "column",
+      alignItems: "center",
+      margin: 5,
+      padding: 10
+      
+    },
+    
+    // button: {
+    //   backgroundColor: "#3A559F",
+    //   height: 44,
+    //   flexDirection: "row",
+    //   justifyContent: "center",
+    //   alignItems: "center",
+    //   borderRadius: 22
+    // },
+    
+  });
 
   export default AddMenu

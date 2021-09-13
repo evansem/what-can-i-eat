@@ -7,6 +7,7 @@ import Search from "./Search"
 import Welcome from "./Welcome"
 import AddMenu from './AddMenu';
 import Preferences from './Preferences';
+import SignupScreen from './SignUp';
 
 function LogoTitle() {
     return (
@@ -39,7 +40,7 @@ export default function SideDrawerMenu() {
     return (
         <NavigationContainer>
             <Drawer.Navigator
-                initialRouteName="Search" //"Home" 
+                initialRouteName="Add Menu" //"Home" 
                 backBehavior="history"
                 screenOptions={{
                     headerTitle: props => <LogoTitle {...props} />,
@@ -54,6 +55,7 @@ export default function SideDrawerMenu() {
                 <Drawer.Screen name="Search" component={Search} />
                 <Drawer.Screen name="Add Menu" component={AddMenu} />
                 <Drawer.Screen name="Preferences" component={Preferences} />
+                <Drawer.Screen name="Restaurant Signup" component={SignupScreen} />
             </Drawer.Navigator>
         </NavigationContainer>
     );
