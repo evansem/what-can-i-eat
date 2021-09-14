@@ -27,17 +27,20 @@ async function signInWithEmail() {
   await firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .then(this.onLoginSuccess.bind(this))
+    .then(()=>{
+      console.log("logged in");
+      //this.onLoginSuccess.bind(this)
+    })
     .catch(error => {
-        console.log("CATCHNG");
-        let errorCode = error.code;
-        let errorMessage = error.message;
-        if (errorCode == 'auth/weak-password') {
-            this.onLoginFailure.bind(this)('Weak Password!');
-        } else {
-            console.log("Err coming")
-            this.onLoginFailure.bind(this)(errorMessage);
-        }
+        console.log(error.message);
+        // let errorCode = error.code;
+        // let errorMessage = error.message;
+        // if (errorCode == 'auth/weak-password') {
+        //     this.onLoginFailure.bind(this)('Weak Password!');
+        // } else {
+        //     console.log("Err coming")
+        //     this.onLoginFailure.bind(this)(errorMessage);
+        // }
     });
 }
 

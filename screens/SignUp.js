@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, View, TextInput, Button } from 'react-native';
 import firebase from 'firebase/app';
 import { global_style, primaryColor, secondaryColor } from '../style';
+import {emailSignup} from '../data/FirebaseHandler'
 
 //const auth = firebase.auth();
 
 const SignupScreen = ({ navigation }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -23,22 +25,7 @@ const SignupScreen = ({ navigation }) => {
     }
   };
 
-  const onHandleSignup = async () => {
-      if (email !== '' && password !== '') {
-        await firebase.auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            alert("Sign Up Successfully")
-            navigation.navigate("Add Menu")
-        })
-        .catch(error => {
-            console.log(error);
-            setSignupError(error.message);
-        });
-    }
-  };
+  
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -51,12 +38,19 @@ const SignupScreen = ({ navigation }) => {
       <Text style={styles.title}>Create an account</Text>
       <TextInput
         style={global_style.inputBox}
+        placeholder='Enter name'
+        autoFocus={true}
+        value={name}
+        onChangeText={text => setName(text)}
+      />
+      <TextInput
+        style={global_style.inputBox}
         leftIcon='email'
         placeholder='Enter email'
         autoCapitalize='none'
         keyboardType='email-address'
         textContentType='emailAddress'
-        autoFocus={true}
+        autoFocus={false}
         value={email}
         onChangeText={text => setEmail(text)}
       />
@@ -78,7 +72,7 @@ const SignupScreen = ({ navigation }) => {
       {/* <Text>{signupError ? <ErrorMessage error={signupError} visible={true} /> : ''}</Text> */}
       {/* <Button onPress={this.getSelectedDiet()} title="Submit" color={primaryColor} /> */}
       <Button
-        onPress={onHandleSignup}
+        onPress={() => emailSignup(name, email, password)}
         color={primaryColor}
         title='Signup'
         // tileColor='#fff'
