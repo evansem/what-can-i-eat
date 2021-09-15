@@ -13,6 +13,10 @@ export const UserContext = createContext(null);
 //     setAuthenticated: (auth) => {}
 //   });
 
+
+
+  
+
 /**
  * This component is responsible for exposing the `UserContext` to the rest of the application. This component can have
  * one of three states (see `UserContextType`) and will update on user state change.

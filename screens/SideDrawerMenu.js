@@ -8,7 +8,7 @@ import Welcome from "./Welcome"
 import AddMenu from './AddMenu';
 import Preferences from './Preferences';
 import SignupScreen from './SignUp';
-import { UserContext, loginLabel } from '../model/LoginManager';
+import { UserContext, loginLabel } from '../business/LoginManager';
 
 const LogoTitle = () => <Image
             resizeMode="contain"
