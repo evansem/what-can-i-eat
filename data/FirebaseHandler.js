@@ -27,7 +27,36 @@ export const databaseInit = () => {
     //const firestore = firebase.firestore();
 }
 
-
+  // Listen for authentication state to change.
+//   firebase.auth().onAuthStateChanged(user => {
+//     if (user != null) {
+//       console.log('We are authenticated now!');
+//     }
+  
+//     // Do other things
+//   });
+  
+  
+async function signInWithEmail() {
+    await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(()=>{
+        console.log("logged in");
+        //this.onLoginSuccess.bind(this)
+      })
+      .catch(error => {
+          console.log(error.message);
+          // let errorCode = error.code;
+          // let errorMessage = error.message;
+          // if (errorCode == 'auth/weak-password') {
+          //     this.onLoginFailure.bind(this)('Weak Password!');
+          // } else {
+          //     console.log("Err coming")
+          //     this.onLoginFailure.bind(this)(errorMessage);
+          // }
+      });
+  }
 
 /**
  * Signs into a user with provided credentials.
