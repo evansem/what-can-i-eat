@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, View, TextInput, Button } from 'react-native';
 import firebase from 'firebase/app';
-import { global_style, primaryColor, secondaryColor } from '../style';
+import { global_style, primaryColor, secondaryColor } from '../constants/style';
 import {emailSignup} from '../data/FirebaseHandler'
 
 //const auth = firebase.auth();
