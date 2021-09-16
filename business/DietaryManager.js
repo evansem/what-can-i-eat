@@ -1,65 +1,104 @@
 import React, { createContext, Component, useState } from "react";
 import { StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
+import { loadPreferences, savePreferences, outputFilename } from '../data/DietaryHandler'
 
-//Expo file system creates a separate storage space for each app
-import * as FileSystem from 'expo-file-system';
 
-import { loadPreferences, savePreferences } from '../data/DietaryHandler'
-import { UserContext } from "./LoginManager";
- 
 
-//Load the possible dietry tags for the source code directory
-const DietData = require('../assets/diet.json')
 
 export const DietContext = createContext({
     //The checkbox data is stored in the diet json file
-    data: DietData,
+    data: loadPreferences(),
     //This field will store the selected options
     selected: [],
-    filename: `${FileSystem.documentDirectory}preferences` //TODO set in handler
+    filename: outputFilename,
+    updateData: (data) => { }
 });
 
+/**
+ * Simply delegates the operation to the data layer
+ * @param data object containing the updated checkbox results 
+ */
+export const exportDiet = (data) => {
+    if (data == undefined) {
+        console.log("Undefinded data")
+    } else {
+        //Unwrap the array of Json objects
+        //console.log(data)
+        savePreferences(data)
+    }
 
 
-export const updateDiet = () => {
-    savePreferences()
 }
 
 /**
  * Keep data in sync when toggling a given checkbox on and off
  * @param {number} id indicates the checkbox which have been clicked
  */
-const toggleCheckbox = (id) => {
-    const data = this.state.data
-    const index = this.state.data.findIndex(x => x.id === id);
+const toggleCheckbox = (id, data, updateData) => {
+    //console.log(data)
+    // console.log("toggle")
+    const index = data.findIndex(x => x.id === id);
     data[index].checked = !data[index].checked
-    this.setState(data)
+
+    updateData(data);
+
+    //this.setState(data)
     //console.log("On checked: "+JSON.stringify(this.state.data))
 }
 
-export const DietProvider = (props) => {
-    loadPreferences();
+//export const DietProvider = (props) => {
+class DietProvider extends React.Component {
+    constructor(props) {
+        super(props);
 
-    // Provider to expose UserContext to rest of the application.
-    return (
-        <DietContext.Provider value={UserContext}>
-            {props.children}
-        </DietContext.Provider>
-    );
+        this.updateData = (newData) => {
+            this.setState(state => ({
+                data: exportDiet(newData)
+            }))
+        }
+
+        // State also contains the updater function so it will
+        // be passed down into the context provider
+        this.state = {
+            //The checkbox data is stored in the diet json file
+            data: loadPreferences(),
+            //This field will store the selected options
+            selected: [],
+            filename: outputFilename,
+            updateData: this.updateData,
+        }
+    }
+
+    render() {
+        // Provider to expose UserContext to rest of the application.
+        return (
+            <DietContext.Provider value={this.state}>
+                {/* {console.log("Context: "+JSON.stringify(DietContext))} */}
+
+                {this.props.children}
+                {/* {console.log("State " + JSON.stringify(this.state))} */}
+            </DietContext.Provider>
+        );
+    }
 }
 
 /**
  * Generates a form made of checkboxes
  * @returns a sequence of checkboxes created based on the dietry data currently loaded
  */
-export const DietryOptions = ({ dietData }) => {
+export const DietryOptions = ({ dietData, updateData }) => {
     //console.log("On render: "+JSON.stringify(this.state.data))
-
+    
     return dietData.map((item, key) =>
         <TouchableOpacity style={{ flexDirection: "row" }}
-            key={key} onPress={() => toggleCheckbox(item.id)}>
-            <CheckBox value={item.checked} onValueChange={() => { toggleCheckbox(item.id) }} />
+            key={key} onPress={
+                () => toggleCheckbox(item.id, dietData, updateData)}>
+            <CheckBox value={item.checked} onValueChange={
+                () => { toggleCheckbox(item.id, dietData, updateData) }} />
             <Text>{item.key}</Text>
         </TouchableOpacity>
     )
 }
+
+export default DietProvider
