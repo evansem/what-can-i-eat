@@ -8,27 +8,26 @@ import { loadPreferences, savePreferences, outputFilename } from '../data/Dietar
 
 export const DietContext = createContext({
     //The checkbox data is stored in the diet json file
-    data: loadPreferences(),
+    data: [],
     //This field will store the selected options
     selected: [],
     filename: outputFilename,
-    updateData: (data) => { }
+    updateData: (data) => { console.err("Dummy data update invoked!") },
+    updateSelected: (data) => { console.err("Dummy select update invoked!") }
 });
 
 /**
  * Simply delegates the operation to the data layer
  * @param data object containing the updated checkbox results 
  */
-export const exportDiet = (data) => {
-    if (data == undefined) {
-        console.log("Undefinded data")
+export const exportDiet = (data, updateSelected) => {
+    if (data == undefined || updateSelected == undefined) {
+        //Cusom error logs to help with troubleshooting
+        console.log("Diet data couldn't be exported because undefinded")
     } else {
-        //Unwrap the array of Json objects
-        //console.log(data)
-        savePreferences(data)
+        //Store the selected option in the context
+        updateSelected(savePreferences(data))
     }
-
-
 }
 
 /**
@@ -52,24 +51,33 @@ class DietProvider extends React.Component {
     constructor(props) {
         super(props);
 
+        //Call back functions to update the diet context's fields
         this.updateData = (newData) => {
             this.setState(state => ({
-                data: exportDiet(newData)
+                data: newData
             }))
         }
+        this.updateSelected = (newSelected) => {
+            this.setState(state => ({
+                selected: newSelected
+            }))
+        }
+
+        //Use a local variable to hold the function to avoid unintentional calls
+        this.importedDiet = loadPreferences(this.updateData, () => this.forceUpdate())
 
         // State also contains the updater function so it will
         // be passed down into the context provider
         this.state = {
             //The checkbox data is stored in the diet json file
-            data: loadPreferences(),
+            data: this.importedDiet,
             //This field will store the selected options
             selected: [],
             filename: outputFilename,
             updateData: this.updateData,
+            updateSelected: this.updateSelected
         }
     }
-
     render() {
         // Provider to expose UserContext to rest of the application.
         return (
@@ -88,8 +96,6 @@ class DietProvider extends React.Component {
  * @returns a sequence of checkboxes created based on the dietry data currently loaded
  */
 export const DietryOptions = ({ dietData, updateData }) => {
-    //console.log("On render: "+JSON.stringify(this.state.data))
-    
     return dietData.map((item, key) =>
         <TouchableOpacity style={{ flexDirection: "row" }}
             key={key} onPress={
@@ -98,6 +104,23 @@ export const DietryOptions = ({ dietData, updateData }) => {
                 () => { toggleCheckbox(item.id, dietData, updateData) }} />
             <Text>{item.key}</Text>
         </TouchableOpacity>
+    )
+}
+
+
+export const SelectedOptions = () => {
+    id = 0
+    return (
+        <DietContext.Consumer>
+            
+            {({ selected }) => (
+                <View>
+                    <Text>Selected Options:</Text>
+                    {selected.map(e => <Text key={id++}>{e}</Text>)}
+                </View>
+                
+            )}
+        </DietContext.Consumer>
     )
 }
 
