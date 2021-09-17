@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native';
 import Preferences from './Preferences';
-import { global_style, primaryColor } from '../style';
+import { global_style, primaryColor } from '../constants/style';
 //import Dimensions from "react-native";
 
 const Welcome = ({ navigation }) => {
