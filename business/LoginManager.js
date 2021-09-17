@@ -6,16 +6,7 @@ import {databaseInit} from '../data/FirebaseHandler'
 /**
  * The context containing the user profile to be exposed to the rest of the application.
  */
-export const UserContext = createContext(null);
-//     {
-//     authenticated: false,
-//     user: undefined,
-//     setAuthenticated: (auth) => {}
-//   });
-
-
-
-  
+export const UserContext = createContext(null); 
 
 /**
  * This component is responsible for exposing the `UserContext` to the rest of the application. This component can have
@@ -58,12 +49,13 @@ export const UserProvider = (props) => {
     );
 }
 
-
+/**
+ * Inform users if they have logged in as restaurants
+ */
 export const loginLabel = (user) => {
     if (user != null) return <DrawerItem
-            label={"Logged in as: "+user.displayName}/>
+            label={"Logged in as: "+user.displayName+" (restaurant access granted)"}/>
     //         onPress={() => console.log("hi")}
-    //     <Text>{user.displayName}</Text>
 }
 
 export default UserProvider;

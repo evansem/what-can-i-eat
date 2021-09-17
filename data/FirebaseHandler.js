@@ -17,7 +17,7 @@ export const databaseInit = () => {
 
     // Check if firebase have already been intialize 
     if (!firebase.apps.length) {
-        console.log("h")
+        console.log("Initializing Firebase app...")
         firebase.initializeApp(firebaseConfig);
     } else {
         firebase.app();
