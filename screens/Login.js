@@ -11,7 +11,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   return (
-
+    
     <View style={global_style.textForm}>
       <Text style={global_style.mainHeader}>
         Sign In
@@ -49,7 +49,8 @@ const Login = ({ navigation }) => {
       >
         {/* {this.state.error} */}
       </Text>
-      <Button onPress={() => signInWithEmail()} title="Submit" color={primaryColor} />
+      <Button onPress={() => {signInWithEmail(email, password); navigation.navigate("Add Menu")}} 
+      title="Login as a Restaurant" color={primaryColor} />
       <Separator />
       <Button onPress={() => navigation.navigate("Restaurant Signup")}
         title="Don't have an Account?" color={secondaryColor} />

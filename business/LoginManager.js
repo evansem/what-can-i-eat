@@ -1,12 +1,14 @@
 import React, { createContext, useEffect, useState } from "react";
 import { DrawerItem } from '@react-navigation/drawer';
 import firebase from "firebase/app";
-import {databaseInit} from '../data/FirebaseHandler'
+import { databaseInit } from '../data/FirebaseHandler'
+import { Text } from "react-native";
+import Login from "../screens/Login";
 
 /**
  * The context containing the user profile to be exposed to the rest of the application.
  */
-export const UserContext = createContext(null); 
+export const UserContext = createContext(null);
 
 /**
  * This component is responsible for exposing the `UserContext` to the rest of the application. This component can have
@@ -50,11 +52,60 @@ export const UserProvider = (props) => {
 }
 
 /**
+ * 
+ * @param pageSupplier a function which given a user returns a component
+ * @param orElse a componnt to display if the user is not logged in
+ */
+
+export const ShowIfLoggedIn = ({ pageSupplier, orElse }) => {
+    return (
+        <UserContext.Consumer>
+            {(user) => {
+                if (user == null) {
+                    return orElse;
+                } else {
+                    return pageSupplier(user);
+                }
+            }}
+        </UserContext.Consumer>
+    )
+}
+
+// export const ShowIfLoggedIn = ({ pageSupplier }) => {
+
+//     return <ShowIfLoggedInOrElse pageSupplier={pageSupplier}
+//         orElse={(user) => <Login navigation={navigation} />} />
+// }
+
+export const checkLogin = (navigation, user) => {
+    if (user != null) {
+        console.log("Already logged in")
+        // User is signed in; allows user to sign out
+        //signOut(auth);
+    } else {
+        // No user is signed in; allows user to sign in
+        navigation.navigate("Restaurant Login");
+    }
+
+}
+
+/**
  * Inform users if they have logged in as restaurants
  */
+export const getDisplayName = (user) => {
+    if (user != null) return "Logged in as: " + user.displayName + " (restaurant access granted)"
+
+}
+
+// export const loginLabel = (user) => {
+//     <DrawerItem label={"Logged in as: " + user.displayName + " (restaurant access granted)"} />
+//     //         onPress={() => console.log("hi")}
+// }
+
 export const loginLabel = (user) => {
     if (user != null) return <DrawerItem
-            label={"Logged in as: "+user.displayName+" (restaurant access granted)"}/>
+        label={"Logged in as: " + user.displayName + " (restaurant access)"} />
+        // style={{alignContent: 'center'}}/>
     //         onPress={() => console.log("hi")}
 }
 
