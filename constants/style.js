@@ -12,8 +12,13 @@ const global_style = StyleSheet.create({
     padding: 10
 
   },
+  softContainer: {
+    margin: 40,
+    fontSize: 18,
+    alignItems: "center",
+  },
   mainHeader: {
-    fontSize: 32, 
+    fontSize: 32,
     fontWeight: "700"
   },
   primaryButton: {
@@ -36,10 +41,33 @@ const global_style = StyleSheet.create({
     borderBottomColor: '#707070',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+
+//=================================================================//
+//                           STYLE FOR TEXT                        //
+//=================================================================//
   textForm: {
     width: "80%",
     margin: "10%"
   },
+  paragraph: {
+    padding: 10,
+    marginVertical: 5,
+    textAlign: 'justify',
+    // fontWeight: "900",
+    fontSize: 14
+
+  },
+
+  title: {
+    fontSize: 20,
+    textAlign: 'justify',
+  },
+  h2: {
+    fontSize: 18,
+  },
+  important: {
+    fontWeight: "bold"
+  }
 });
 
 export { global_style, primaryColor, secondaryColor }
