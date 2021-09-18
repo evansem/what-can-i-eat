@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
 import { DietContext } from '../business/DietaryManager';
-import { primaryColor } from '../constants/style';
+import { global_style, primaryColor } from '../constants/style';
 import Item from './Item';
 
 export const NoSelection = ({ selected }) => {
@@ -21,7 +21,7 @@ export const SelectedDiet = ({ compact }) => {
 
             {({ selected }) => (
                 <View>
-                    <Text style={styles.title}>Selected dietary tags:</Text>
+                    <Text style={global_style.title}>Selected dietary tags:</Text>
 
                     <View style={compact ? styles.rowContainer : styles.colContainer}>
 
@@ -57,8 +57,5 @@ const styles = StyleSheet.create({
     },
     compactItem: {
         padding: 10
-    },
-    title: {
-        fontSize: 20,
     },
 });

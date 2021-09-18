@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import SideDrawerMenu from './screens/SideDrawerMenu';
+import SideDrawerMenu from './navigation/SideDrawerMenu';
 import UserProvider from './business/LoginManager'
 import DietProvider from './business/DietaryManager'
 import { LogBox } from 'react-native';
