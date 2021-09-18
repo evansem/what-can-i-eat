@@ -1,11 +1,13 @@
 //import * as React from 'react';
 import React from 'react';
 import MapView from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions, Button } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Button, SafeAreaView } from 'react-native';
 import * as Location from 'expo-location';
+import { SelectedDiet } from '../components/SelectedDiet';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Search = ({ navigation }) => {
-  
+
   // navigator.geolocation.getCurrentPosition((position) => {
   //   var lat = parseFloat(position.coords.latitude)
   //   var long = parseFloat(position.coords.longitude)
@@ -18,7 +20,10 @@ const Search = ({ navigation }) => {
   let longitude = 174.77791627205266
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <SelectedDiet compact={true}/>
+      </ScrollView>
       <Text>Search</Text>
       <MapView
         style={styles.map}
@@ -30,13 +35,14 @@ const Search = ({ navigation }) => {
         }}>
       </MapView>
       {/* <Text>Search Bar</Text> */}
-    </View>
+
+    </SafeAreaView>
     // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
     //   <Button
     //     onPress={() => alert("Not Available")}
     //     title="Search"
     //   />
-      
+
     // </View>
   );
 }
@@ -50,7 +56,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get('window').width,
-    height: 0.8*Dimensions.get('window').height,
+    height: 0.7 * Dimensions.get('window').height,
   },
 });
 

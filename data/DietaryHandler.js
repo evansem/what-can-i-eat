@@ -16,7 +16,7 @@ export const outputFilename = `${FileSystem.documentDirectory}preferences`
 /**
  * Import user dietary requirements from disk
  */
-export const loadPreferences = (updateData, forceUpdate) => {
+export const loadPreferences = (updateData, updateSelected, forceUpdate) => {
     //Start from default state where all special diet tags are off
     var data = dietData
     //Load preferences from local storage
@@ -29,6 +29,7 @@ export const loadPreferences = (updateData, forceUpdate) => {
             //Therefore assigning the result to the data variable will do nothing
             //We need to use a call back function to update the context
             updateData(data)
+            updateSelected(extractSelection(data))
             //And once the file has been loaded and the data updated we need to re-render the checkboxes
             forceUpdate()
             console.log("Dietary requirements have been loaded from disk")
@@ -45,11 +46,10 @@ export const loadPreferences = (updateData, forceUpdate) => {
 }
 
 /**
- * On submit of the form cache updated dietry data to disk
+ * Returned a simplified list of the selected diet tags
+ * Useful for dispaling custom menus quicker
  */
-export function savePreferences(data) {
-    console.log("Exporting dietary requirements...")
-    //console.log(data)
+export function extractSelection(data){
     var selected = []
     var keys = data.map((t) => t.key)
     var checks = data.map((t) => t.checked)
@@ -58,10 +58,18 @@ export function savePreferences(data) {
             selected.push(keys[index])
         }
     }
+    return selected;
+}
+
+/**
+ * On submit of the form cache updated dietry data to disk
+ */
+export function savePreferences(data) {
+    console.log("Exporting dietary requirements...")
+    
     //Chace the updated data locally
     FileSystem.writeAsStringAsync(outputFilename, JSON.stringify(data))
 
     //Keep an handy clear list of the selected options
-    //Useful for dispaling custom menus quicker
-    return selected;
+    return extractSelection(data);
 }
