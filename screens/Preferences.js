@@ -5,7 +5,8 @@ import { global_style, primaryColor } from '../constants/style';
 
 import * as FileSystem from 'expo-file-system';
 
-import { DietryOptions, exportDiet, DietContext, SelectedOptions } from '../business/DietaryManager'
+import { DietryOptions, exportDiet, DietContext } from '../business/DietaryManager'
+import { SelectedDiet } from '../components/SelectedDiet'
 //Expo file system creates a separate storage space for each app
 
 //Load the possible dietry tags for the source code directory
@@ -44,13 +45,15 @@ const Preferences = ({ navigation }) => {
                     When ordering remember to always ask the waiter to add the allergens as a special note in the order",
                 </Text>
                 <DietContext.Consumer>
-                    {({ data, selected, updateData, updateSelected }) => (
+                    {({ data, updateData, updateSelected }) => (
                         <View style={styles.checkboxContainer}>
                             <DietryOptions dietData={data} updateData={updateData} />
 
                             <Text>
-                                I acknowledge I will take the responsibility of asking the waiter for confirmation
+                                By submitting you acknowledge that you will take the responsibility of asking the waiter for confirmation
                             </Text>
+                            {/* TODO add additional ack checkbox */}
+
                             <Button onPress={() => exportDiet(data, updateSelected)} title="Submit" color={primaryColor} />
                             
                         </View>
@@ -58,7 +61,7 @@ const Preferences = ({ navigation }) => {
                     )}
                 </DietContext.Consumer>
 
-                <SelectedOptions/>
+                <SelectedDiet compact={false}/>
             </ScrollView>
         </SafeAreaView>
     )

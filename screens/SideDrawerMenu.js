@@ -9,6 +9,7 @@ import Preferences from './Preferences';
 import SignupScreen from './SignUp';
 import { UserContext, loginLabel } from '../business/LoginManager';
 import SmallLogo from '../components/SmallLogo';
+import { primaryColor } from '../constants/style';
 
 
 const Drawer = createDrawerNavigator();
@@ -24,7 +25,7 @@ export default function SideDrawerMenu() {
                     headerTitleAlign: 'center',
                     headerTitleStyle: { alignSelf: 'center' },
                     //headerTitleStyle: {textAlign: 'center', justifyContent: 'center', alignItems: 'center'},
-                    drawerActiveTintColor: '#008037',
+                    drawerActiveTintColor: primaryColor,
                 }}
                 >
                 

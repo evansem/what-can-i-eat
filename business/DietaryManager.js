@@ -64,7 +64,7 @@ class DietProvider extends React.Component {
         }
 
         //Use a local variable to hold the function to avoid unintentional calls
-        this.importedDiet = loadPreferences(this.updateData, () => this.forceUpdate())
+        this.importedDiet = loadPreferences(this.updateData, this.updateSelected, () => this.forceUpdate())
 
         // State also contains the updater function so it will
         // be passed down into the context provider
@@ -108,20 +108,6 @@ export const DietryOptions = ({ dietData, updateData }) => {
 }
 
 
-export const SelectedOptions = () => {
-    id = 0
-    return (
-        <DietContext.Consumer>
-            
-            {({ selected }) => (
-                <View>
-                    <Text>Selected Options:</Text>
-                    {selected.map(e => <Text key={id++}>{e}</Text>)}
-                </View>
-                
-            )}
-        </DietContext.Consumer>
-    )
-}
+
 
 export default DietProvider
