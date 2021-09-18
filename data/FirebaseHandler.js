@@ -2,7 +2,12 @@ import firebase from 'firebase/app';
 import 'firebase/firestore'
 import 'firebase/auth'
 
-export const firebaseConfig = {
+
+//=================================================================//
+//                        DATABASE SETUP                           //
+//=================================================================//
+
+const firebaseConfig = {
     apiKey: "AIzaSyBMyVA_URwEDHHTgmuVUPg09Wg727OU0Qk",
     authDomain: "what-can-i-eat-6280c.firebaseapp.com",
     projectId: "what-can-i-eat-6280c",
@@ -27,36 +32,50 @@ export const databaseInit = () => {
     //const firestore = firebase.firestore();
 }
 
-  // Listen for authentication state to change.
+//=================================================================//
+//                         LOGIN OPERATIONS                        //
+//=================================================================//
+
+export async function signOut() {
+    await firebase.auth().signOut().then(() => {
+        // Sign-out successful.
+        console.log("Logout successfully")
+    }).catch((error) => {
+        // An error happened.
+        console.log("Couldn't logout")
+    });
+}
+
+// Listen for authentication state to change.
 //   firebase.auth().onAuthStateChanged(user => {
 //     if (user != null) {
 //       console.log('We are authenticated now!');
 //     }
-  
+
 //     // Do other things
 //   });
-  
-  
-async function signInWithEmail() {
+
+
+export async function signInWithEmail(email, password) {
     await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(()=>{
-        console.log("logged in");
-        //this.onLoginSuccess.bind(this)
-      })
-      .catch(error => {
-          console.log(error.message);
-          // let errorCode = error.code;
-          // let errorMessage = error.message;
-          // if (errorCode == 'auth/weak-password') {
-          //     this.onLoginFailure.bind(this)('Weak Password!');
-          // } else {
-          //     console.log("Err coming")
-          //     this.onLoginFailure.bind(this)(errorMessage);
-          // }
-      });
-  }
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+            console.log("logged in");
+            //this.onLoginSuccess.bind(this)
+        })
+        .catch(error => {
+            console.log(error.message);
+            // let errorCode = error.code;
+            // let errorMessage = error.message;
+            // if (errorCode == 'auth/weak-password') {
+            //     this.onLoginFailure.bind(this)('Weak Password!');
+            // } else {
+            //     console.log("Err coming")
+            //     this.onLoginFailure.bind(this)(errorMessage);
+            // }
+        });
+}
 
 /**
  * Signs into a user with provided credentials.
@@ -91,6 +110,53 @@ export const emailSignup = async (name, email, password) => {
             });
     }
 };
+
+//=================================================================//
+//                     MENU AND MEALS OPERATIONS                   //
+//=================================================================//
+
+export const addRestaurant = (user, mealToAdd) => {
+    // Prevent the default form redirect
+    //meal.preventDefault();
+    // Write a new message to the database collection "guestbook"
+    var uid = firebase.auth().currentUser.uid
+    //console.log(user)
+    firebase.firestore().collection('restaurant').doc(uid).set({
+        name: user.displayName
+    })
+    console.log("Restaurant added")
+}
+
+export const addMeal = (user, mealToAdd) => {
+    // Prevent the default form redirect
+    //meal.preventDefault();
+    // Write a new message to the database collection "guestbook"
+    var uid = firebase.auth().currentUser.uid
+    console.log(mealToAdd)
+    firebase.firestore().collection('restaurant').doc(uid).collection('menu').doc('s').set({
+        name: "mealToAdd",
+        lastModified: Date.now()
+    })
+    //firestore.FieldValue.serverTimestamp()
+    console.log("Meal added")
+    
+    // .add({ //doc(user.uid).set({
+    //     text: mealToAdd,
+    //     timestamp: Date.now(),
+    //     name: user.displayName
+    // }).then(() => {
+    //     console.log('User added!');
+    // }).catch(() =>
+    //     console.log(firebase.firestore().collection('restaurant'))
+    // )
+
+    
+
+    // clear message input field
+    //input.value = '';
+    // Return false to avoid redirect
+    return false;
+}
 
 
 
