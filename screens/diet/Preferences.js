@@ -1,12 +1,15 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Formik, Form } from 'formik';
-import { global_style, primaryColor } from '../constants/style';
+import { global_style, primaryColor } from '../../constants/style';
 
 import * as FileSystem from 'expo-file-system';
 
-import { DietryOptions, exportDiet, DietContext } from '../business/DietaryManager'
-import { SelectedDiet } from '../components/SelectedDiet'
+import { DietryOptions, exportDiet, DietContext } from '../../business/DietaryManager'
+import { SelectedDiet } from '../../components/SelectedDiet'
+import { useState } from "react/cjs/react.development";
+import { TextInput } from "react-native-gesture-handler";
+import { suggestDietaryTag } from "../../data/FirebaseHandler";
 //Expo file system creates a separate storage space for each app
 
 //Load the possible dietry tags for the source code directory
@@ -28,51 +31,54 @@ function verifyAck(value) {
  */
 const Preferences = ({ navigation }) => {
 
-    
+    const [suggestion, setSuggestion] = useState('')
 
     /**
      * Main method to organize the content of this page
      * @returns the components displyed in this page
      */
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={global_style.softContainer}>
             <ScrollView>
-                <Text>
+                <Text style={global_style.h2}>
                     Select all tags apporiate for your diet
                 </Text>
-                <Text>
-                    Your diet requirements can be changed any time, through the menu in preferences.
-                    When ordering remember to always ask the waiter to add the allergens as a special note in the order",
-                </Text>
+
                 <DietContext.Consumer>
                     {({ data, updateData, updateSelected }) => (
                         <View style={styles.checkboxContainer}>
                             <DietryOptions dietData={data} updateData={updateData} />
 
-                            <Text>
-                                By submitting you acknowledge that you will take the responsibility of asking the waiter for confirmation
-                            </Text>
-                            {/* TODO add additional ack checkbox */}
+                            <Button onPress={() => navigation.push('AckDiet')} title="Submit" color={primaryColor} />
 
-                            <Button onPress={() => exportDiet(data, updateSelected)} title="Submit" color={primaryColor} />
-                            
                         </View>
-                        
+
                     )}
                 </DietContext.Consumer>
 
-                <SelectedDiet compact={false}/>
+                <View style={global_style.separator} />
+
+                <Text style={global_style.h2}>
+                    Couldn't find what you were looking for?</Text>
+                <Text style={global_style.paragraph}>
+                    Suggest us a dietary tag or allergen to include in the app</Text>
+
+                <TextInput
+                    style={global_style.inputBox}
+                    placeholder='Enter your suggestion'
+                    autoFocus={true}
+                    value={suggestion}
+                    onChangeText={text => setSuggestion(text)}
+                />
+                <Button onPress={() => suggestDietaryTag(suggestion)} title="Send Anonymously" color={primaryColor} />
+
+
             </ScrollView>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        margin: 40,
-        fontSize: 18,
-        alignItems: "center",
-    },
     checkboxContainer: {
         flex: 1,
         flexDirection: "column",

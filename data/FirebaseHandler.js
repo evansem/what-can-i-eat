@@ -118,7 +118,7 @@ export const emailSignup = async (name, email, password) => {
 export const addRestaurant = (user, mealToAdd) => {
     // Prevent the default form redirect
     //meal.preventDefault();
-    // Write a new message to the database collection "guestbook"
+    // Write a new message to the database collection "restaurant"
     var uid = firebase.auth().currentUser.uid
     //console.log(user)
     firebase.firestore().collection('restaurant').doc(uid).set({
@@ -130,7 +130,7 @@ export const addRestaurant = (user, mealToAdd) => {
 export const addMeal = (user, mealToAdd) => {
     // Prevent the default form redirect
     //meal.preventDefault();
-    // Write a new message to the database collection "guestbook"
+    // Write a new message to the database collection menu for this restaurant
     var uid = firebase.auth().currentUser.uid
     console.log(mealToAdd)
     firebase.firestore().collection('restaurant').doc(uid).collection('menu').doc('s').set({
@@ -158,7 +158,17 @@ export const addMeal = (user, mealToAdd) => {
     return false;
 }
 
-
+export const suggestDietaryTag = (dietTag) => {
+    if(dietTag == null || dietTag == "") { return null; }
+    // Prevent the default form redirect
+    //meal.preventDefault();
+    //console.log(user)
+    firebase.firestore().collection('diet').add({
+        name: dietTag,
+        submitted: Date.now()
+    })
+    console.log("Suggestion added")
+}
 
 /**
  * Describes the return type of requests.
