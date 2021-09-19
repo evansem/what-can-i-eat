@@ -39,13 +39,15 @@ export const databaseInit = () => {
 //=================================================================//
 
 export async function signOut() {
+    var message = ''
     await firebase.auth().signOut().then(() => {
         // Sign-out successful.
-        return "Logout successfully"
+        message = "Logout successfully"
     }).catch((error) => {
         // An error happened.
-        return "Couldn't logout"
+        message = "Couldn't logout"
     });
+    return message
 }
 
 // Listen for authentication state to change.
@@ -147,8 +149,8 @@ export const addMeal = (user, mealToAdd) => {
     // Write a new message to the database collection menu for this restaurant
     var uid = firebase.auth().currentUser.uid
     console.log(mealToAdd)
-    firebase.firestore().collection('restaurant').doc(uid).collection('menu').doc('s').set({
-        name: "mealToAdd",
+    firebase.firestore().collection('restaurant').doc(uid).collection('menu').doc().set({
+        name: mealToAdd,
         lastModified: Date.now()
     })
     //firestore.FieldValue.serverTimestamp()

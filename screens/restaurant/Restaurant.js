@@ -5,13 +5,19 @@ import { global_style, primaryColor, secondaryColor } from '../../constants/styl
 import Login from './Login';
 import { ShowIfLoggedIn, UserContext } from '../../business/LoginManager';
 import Item from '../../components/Item';
+import LargeButton from '../../components/LargeButton';
 
 const Restaurant = ({ navigation }) => {
     return (
         <ShowIfLoggedIn pageSupplier={
             (user) => {
                 return (
-                    <Item title={user.displayName} />
+                    <SafeAreaView style={global_style.container}>
+                        <Item title={user.displayName} style={global_style.item} />
+
+                        <LargeButton onPress={() => navigation.navigate("Add Menu")} title="Add a menu" />
+                    </SafeAreaView>
+
                 )
             }
 

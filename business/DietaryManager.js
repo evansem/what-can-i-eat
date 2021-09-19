@@ -34,13 +34,13 @@ export const exportDiet = (data, updateSelected) => {
  * Keep data in sync when toggling a given checkbox on and off
  * @param {number} id indicates the checkbox which have been clicked
  */
-const toggleCheckbox = (id, data, updateData) => {
+const toggleCheckbox = (id, data, update) => {
     //console.log(data)
     // console.log("toggle")
     const index = data.findIndex(x => x.id === id);
     data[index].checked = !data[index].checked
 
-    updateData(data);
+    update(data);
 
     //this.setState(data)
     //console.log("On checked: "+JSON.stringify(this.state.data))
@@ -95,16 +95,34 @@ class DietProvider extends React.Component {
  * Generates a form made of checkboxes
  * @returns a sequence of checkboxes created based on the dietry data currently loaded
  */
-export const DietryOptions = ({ dietData, updateData }) => {
-    return dietData.map((item, key) =>
-        <TouchableOpacity style={{ flexDirection: "row" }}
-            key={key} onPress={
-                () => toggleCheckbox(item.id, dietData, updateData)}>
-            <CheckBox value={item.checked} onValueChange={
-                () => { toggleCheckbox(item.id, dietData, updateData) }} />
-            <Text>{item.key}</Text>
-        </TouchableOpacity>
-    )
+export class DietryOptions extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    //export const DietryOptions = ({ dietData, updateData }) => {
+
+    render() {
+
+        return (this.props.dietData.map((item, key) =>
+            <TouchableOpacity style={{ flexDirection: "row" }}
+                key={key}
+                onPress={() => {
+                    toggleCheckbox(item.id, this.props.dietData, this.props.updateData)
+                    this.forceUpdate()
+                    //setData(dietData)
+                }}
+            >
+                <CheckBox value={item.checked}
+                onValueChange={() => { 
+                    toggleCheckbox(item.id, this.props.dietData, this.props.updateData) 
+                    //this.forceUpdate()
+                }
+                } 
+                />
+                <Text>{item.key}</Text>
+            </TouchableOpacity>
+        ))
+    }
 }
 
 

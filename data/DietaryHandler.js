@@ -7,6 +7,10 @@ import * as FileSystem from 'expo-file-system';
  */
 export const dietData = require('../assets/diet.json')
 
+export const getDefaultDietTags = () => {
+    return dietData
+}
+
 /**
  * Store path to the prefences stored in the user local storage.
  * Expo file system creates a separate storage space for each app
