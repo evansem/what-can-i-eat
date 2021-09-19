@@ -15,7 +15,7 @@ export const NoSelection = ({ selected }) => {
 export const SelectedDiet = ({ compact }) => {
     var id = 0
     //Compute the style for the items to display
-    var itemStyle = compact ? [styles.item, styles.compactItem] : styles.item
+    var itemStyle = compact ? [global_style.item, global_style.compactItem] : global_style.item
     return (
         <DietContext.Consumer>
 
@@ -43,19 +43,5 @@ const styles = StyleSheet.create({
     colContainer: {
         flex: 1,
         // marginTop: StatusBar.currentHeight || 0,
-    },
-    item: {
-        backgroundColor: primaryColor,
-        padding: 15,
-        marginVertical: 8,
-        marginHorizontal: 16,
-        //primary colour in dec with opacity
-        backgroundColor: 'rgba(00,128,55, 0.3)',
-        borderRadius: 5,
-        alignItems: "center",
-        minWidth: 100
-    },
-    compactItem: {
-        padding: 10
     },
 });

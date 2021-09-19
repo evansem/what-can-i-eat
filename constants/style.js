@@ -4,6 +4,9 @@ const primaryColor = '#008037'
 const secondaryColor = '#DBB700' //FF914D'
 
 const global_style = StyleSheet.create({
+  //=================================================================//
+  //                       WRAPPERS AND BOXES                        //
+  //=================================================================//
   container: {
     flex: 1,
     flexDirection: "column",
@@ -16,6 +19,20 @@ const global_style = StyleSheet.create({
     margin: 40,
     fontSize: 18,
     alignItems: "center",
+  },
+  item: {
+    backgroundColor: primaryColor,
+    padding: 15,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    //primary colour in dec with opacity
+    backgroundColor: 'rgba(00,128,55, 0.3)',
+    borderRadius: 5,
+    alignItems: "center",
+    minWidth: 100
+  },
+  compactItem: {
+    padding: 10
   },
   mainHeader: {
     fontSize: 32,
@@ -42,9 +59,9 @@ const global_style = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
 
-//=================================================================//
-//                           STYLE FOR TEXT                        //
-//=================================================================//
+  //=================================================================//
+  //                           STYLE FOR TEXT                        //
+  //=================================================================//
   textForm: {
     width: "80%",
     margin: "10%"

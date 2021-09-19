@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { signInWithEmail } from '../data/FirebaseHandler';
-import { global_style, primaryColor, secondaryColor } from '../constants/style';
+import { signInWithEmail } from '../../data/FirebaseHandler';
+import { global_style, primaryColor, secondaryColor } from '../../constants/style';
 import Login from './Login';
-import { ShowIfLoggedIn, UserContext } from '../business/LoginManager';
-import Item from '../components/Item';
+import { ShowIfLoggedIn, UserContext } from '../../business/LoginManager';
+import Item from '../../components/Item';
 
 const Restaurant = ({ navigation }) => {
     return (

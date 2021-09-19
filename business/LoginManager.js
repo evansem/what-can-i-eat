@@ -3,7 +3,7 @@ import { DrawerItem } from '@react-navigation/drawer';
 import firebase from "firebase/app";
 import { databaseInit } from '../data/FirebaseHandler'
 import { Text } from "react-native";
-import Login from "../screens/Login";
+import Login from "../screens/restaurant/Login";
 
 /**
  * The context containing the user profile to be exposed to the rest of the application.

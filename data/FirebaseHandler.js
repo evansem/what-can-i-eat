@@ -1,6 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore'
 import 'firebase/auth'
+import { requires } from '../business/GeneralLogic';
+import * as Location from 'expo-location';
 
 
 //=================================================================//
@@ -39,10 +41,10 @@ export const databaseInit = () => {
 export async function signOut() {
     await firebase.auth().signOut().then(() => {
         // Sign-out successful.
-        console.log("Logout successfully")
+        return "Logout successfully"
     }).catch((error) => {
         // An error happened.
-        console.log("Couldn't logout")
+        return "Couldn't logout"
     });
 }
 
@@ -84,45 +86,57 @@ export async function signInWithEmail(email, password) {
  * @param password: Of user account
  * @return AuthenticationResponse: Containing success / failure and error message.
  */
-export const emailSignup = async (name, email, password) => {
-    //Preconditions
-    if (!email) return new AuthenticationResponse(false, 'Email is required');
-    if (!password) return new AuthenticationResponse(false, 'Password is required')
-
-    if (email !== '' && password !== '') {
-        await firebase.auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                return userCredential.user.updateProfile({
-                    displayName: name
-                }).finally()
-                console.log(name)
-                // Signed in 
-                const user = userCredential.user;
-                alert("Sign Up Successfully")
-                //navigation.navigate("Add Menu")
-                return new AuthenticationResponse(true);
-            })
-            .catch(error => {
-                //console.log(error);
-                //setSignupError(error.message);
-                return new AuthenticationResponse(false, error.message);
-            });
+export const emailSignup = async (name, address, email, password) => {
+    if (requires[name, address, email, password] != null) {
+        return null;
     }
+    //Preconditions
+    //if (!email) return new AuthenticationResponse(false, 'Email is required');
+    //if (!password) return new AuthenticationResponse(false, 'Password is required')
+
+    //Geocode an address string to latitude-longitude location
+    let location = await Location.geocodeAsync(address);
+    if (location == null) { return null; }
+
+    //if (email !== '' && password !== '') {
+    await firebase.auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            return userCredential.user.updateProfile({
+                displayName: name
+            }).finally()
+            console.log(name)
+            // Signed in 
+            const user = userCredential.user;
+            alert("Sign Up Successfully")
+            //navigation.navigate("Add Menu")
+            return new AuthenticationResponse(true);
+        })
+        .catch(error => {
+            //console.log(error);
+            //setSignupError(error.message);
+            return new AuthenticationResponse(false, error.message);
+        });
+
+    addRestaurant(location.latitude, location.longitude)
 };
 
 //=================================================================//
 //                     MENU AND MEALS OPERATIONS                   //
 //=================================================================//
 
-export const addRestaurant = (user, mealToAdd) => {
+export const addRestaurant = (latitude, longitude) => {
+    const user = firebase.auth().currentUser;
+
     // Prevent the default form redirect
     //meal.preventDefault();
     // Write a new message to the database collection "restaurant"
     var uid = firebase.auth().currentUser.uid
     //console.log(user)
     firebase.firestore().collection('restaurant').doc(uid).set({
-        name: user.displayName
+        name: user.displayName,
+        latitude: latitude,
+        longitude: longitude,
     })
     console.log("Restaurant added")
 }
@@ -139,7 +153,7 @@ export const addMeal = (user, mealToAdd) => {
     })
     //firestore.FieldValue.serverTimestamp()
     console.log("Meal added")
-    
+
     // .add({ //doc(user.uid).set({
     //     text: mealToAdd,
     //     timestamp: Date.now(),
@@ -150,7 +164,7 @@ export const addMeal = (user, mealToAdd) => {
     //     console.log(firebase.firestore().collection('restaurant'))
     // )
 
-    
+
 
     // clear message input field
     //input.value = '';
@@ -159,7 +173,7 @@ export const addMeal = (user, mealToAdd) => {
 }
 
 export const suggestDietaryTag = (dietTag) => {
-    if(dietTag == null || dietTag == "") { return null; }
+    if (dietTag == null || dietTag == "") { return null; }
     // Prevent the default form redirect
     //meal.preventDefault();
     //console.log(user)

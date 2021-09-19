@@ -3,18 +3,12 @@ import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from "../screens/Home"
 import Search from "../screens/Search"
-import Welcome from "../screens/Welcome"
-import AddMenu from '../screens/AddMenu';
-import Preferences from '../screens/diet/Preferences';
-import SignupScreen from '../screens/SignUp';
-import Login from '../screens/Login';
 import { UserContext, loginLabel, ShowIfLoggedIn } from '../business/LoginManager';
 import SmallLogo from '../components/SmallLogo';
 import { primaryColor } from '../constants/style';
-import Restaurant from '../screens/Restaurant';
 import UpdateDietNavi from './UpdateDietNavi';
-
-
+import RestaurantPortalNavi from './RestaurantPortalNavi';
+import Logout from '../screens/restaurant/Logout';
 
 const Drawer = createDrawerNavigator();
 
@@ -34,16 +28,11 @@ export default function SideDrawerMenu() {
                 <Drawer.Screen name="Home" component={HomeScreen} />
                 <Drawer.Screen name="Preferences" component={UpdateDietNavi} />
                 <Drawer.Screen name="Search" component={Search} />
-                <Drawer.Screen name="Restaurant Portal" component={Restaurant} />
-                <Drawer.Screen name="Add Menu" component={AddMenu} />
-                <Drawer.Screen name="Restaurant Login" component={Login} />
-                <Drawer.Screen name="Restaurant Signup" component={SignupScreen} />
+                <Drawer.Screen name="Restaurant Portal" component={RestaurantPortalNavi} />
+                <Drawer.Screen name="Sign Out" component={Logout} />
                 
             </Drawer.Navigator>
             <ShowIfLoggedIn pageSupplier={loginLabel} orElse={null} />
-            {/* <UserContext.Consumer>
-                {loginLabel}
-            </UserContext.Consumer> */}
             
         </NavigationContainer>
     );
