@@ -13,18 +13,22 @@ const Logout = ({ navigation }) => {
 
     return (
         <ShowIfLoggedIn pageSupplier={
-            (user) => <LogoutPage message={signOut()} />
-        } orElse={
-            <LogoutPage message="You are not currently logged in" />
-            //<Login navigation={navigation} />
-        } />
+            (user) => {
+                var message = ""
+                signOut().then((value) => message = value)
+                console.log(message)
+                return(<LogoutPage message={message} />)}
+            } orElse={
+                <LogoutPage message="You are not currently logged in" />
+                //<Login navigation={navigation} />
+            } />
     )
 }
 
 const LogoutPage = ({ message }) => {
     return (
         <SafeAreaView style={global_style.container}>
-            <Item title={message} style={global_style.item}/>
+            <Item title={message} style={global_style.item} />
         </SafeAreaView>
     )
 }

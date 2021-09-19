@@ -12,8 +12,8 @@ const global_style = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     margin: 5,
-    padding: 10
-
+    padding: 10,
+    justifyContent: 'center',
   },
   softContainer: {
     margin: 40,
@@ -38,6 +38,15 @@ const global_style = StyleSheet.create({
     fontSize: 32,
     fontWeight: "700"
   },
+  //=================================================================//
+  //                       INPUT AND BUTTONS                         //
+  //=================================================================//
+  checkboxContainer: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    margin: 40,
+},
   primaryButton: {
     backgroundColor: primaryColor,
     padding: 100,
@@ -78,6 +87,7 @@ const global_style = StyleSheet.create({
   title: {
     fontSize: 20,
     textAlign: 'justify',
+    justifyContent: 'space-between',
   },
   h2: {
     fontSize: 18,
