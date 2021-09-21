@@ -60,7 +60,8 @@ const global_style = StyleSheet.create({
     borderColor: "#707070",
     borderBottomWidth: 1,
     paddingBottom: 1.5,
-    marginTop: 25.5
+    marginTop: 15,
+    marginBottom: 10
   },
   separator: {
     marginVertical: 22,

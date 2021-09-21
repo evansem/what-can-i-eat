@@ -36,7 +36,7 @@ export const loadPreferences = (updateData, updateSelected, forceUpdate) => {
             updateSelected(extractSelection(data))
             //And once the file has been loaded and the data updated we need to re-render the checkboxes
             forceUpdate()
-            console.log("Dietary requirements have been loaded from disk")
+            //console.log("Dietary requirements have been loaded from disk")
         })
         .catch(error => {
             //This will always be triggered the real first time the page is opened

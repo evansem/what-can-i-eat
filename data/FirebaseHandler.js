@@ -24,7 +24,7 @@ export const databaseInit = () => {
 
     // Check if firebase have already been intialize 
     if (!firebase.apps.length) {
-        console.log("Initializing Firebase app...")
+        //console.log("Initializing Firebase app...")
         firebase.initializeApp(firebaseConfig);
     } else {
         firebase.app();
@@ -81,6 +81,9 @@ export async function signInWithEmail(email, password) {
         });
 }
 
+//=================================================================//
+//                              REGISTRATION                       //
+//=================================================================//
 /**
  * Signs into a user with provided credentials.
  *
@@ -88,39 +91,59 @@ export async function signInWithEmail(email, password) {
  * @param password: Of user account
  * @return AuthenticationResponse: Containing success / failure and error message.
  */
-export const emailSignup = async (name, address, email, password) => {
+export const emailSignup = async (name, address, email, password, onSuccess) => {
     if (requires[name, address, email, password] != null) {
+        console.log("unsufficient data supplied")
         return null;
     }
     //Preconditions
     //if (!email) return new AuthenticationResponse(false, 'Email is required');
     //if (!password) return new AuthenticationResponse(false, 'Password is required')
 
+    //Request permission to validate the address
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    console.log("Location request "+status)
     //Geocode an address string to latitude-longitude location
     let location = await Location.geocodeAsync(address);
     if (location == null) { return null; }
+    console.log("Selected location "+location.latitude +" "+ location.longitude)
 
-    //if (email !== '' && password !== '') {
+    //Default value if the address is invalid
+    let latitude = location.latitude
+    let longitude = location.longitude
+
+    if (!latitude) {
+        latitude = '-41.29017925997491'
+        longitude = '174.76838958609653'
+    }
+    
+    console.log("Ready to add a user")
+    
     await firebase.auth()
         .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            return userCredential.user.updateProfile({
+            userCredential.user.updateProfile({
                 displayName: name
-            }).finally()
-            console.log(name)
-            // Signed in 
-            const user = userCredential.user;
-            alert("Sign Up Successfully")
-            //navigation.navigate("Add Menu")
-            return new AuthenticationResponse(true);
+            })
+            //.finally()
+            
+
+            console.log("Added login for "+name)
+            // // Signed in 
+            // const user = userCredential.user;
+            // alert("Sign Up Successfully")
+            // //navigation.navigate("Add Menu")
+            // return new AuthenticationResponse(true);
         })
         .catch(error => {
-            //console.log(error);
+            console.log(error);
             //setSignupError(error.message);
-            return new AuthenticationResponse(false, error.message);
+            //return new AuthenticationResponse(false, error.message);
         });
 
-    addRestaurant(location.latitude, location.longitude)
+    addRestaurant(latitude, longitude)
+    console.log("Added restaurant page")
+    onSuccess()
 };
 
 //=================================================================//

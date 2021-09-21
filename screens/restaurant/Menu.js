@@ -7,7 +7,7 @@ import { ShowIfLoggedIn, UserContext } from '../../business/LoginManager';
 import Item from '../../components/Item';
 import LargeButton from '../../components/LargeButton';
 
-const Restaurant = ({ navigation }) => {
+const Menu = ({ navigation }) => {
     return (
         <ShowIfLoggedIn pageSupplier={
             (user) => {
@@ -15,8 +15,6 @@ const Restaurant = ({ navigation }) => {
                     <SafeAreaView style={global_style.container}>
                         <Item title={user.displayName} style={global_style.item} />
 
-                        <LargeButton onPress={() => navigation.navigate("Add Menu")} title="Add a meal" />
-                        <LargeButton onPress={() => navigation.navigate("Menu")} title="View your menu" />
                     </SafeAreaView>
 
                 )
@@ -26,4 +24,4 @@ const Restaurant = ({ navigation }) => {
     )
 }
 
-export default Restaurant
+export default Menu

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, Button } from "react-native";
 import { requires } from "../business/GeneralLogic";
+import { primaryColor } from "../constants/style";
+import InlineError from "./InlineError";
 
 
 const SubmitFormButton = ({ onPress, dataRequired, title }) => {
