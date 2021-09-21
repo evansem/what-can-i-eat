@@ -56,6 +56,7 @@ const AddMenu = ({ navigation }) => {
                 } else {
                   setMealError(null)
                   addMeal(user, meal)
+                  navigation.navigate("Success Page");
                 }
               }} />
           </ScrollView>

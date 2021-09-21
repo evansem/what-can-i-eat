@@ -1,12 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, Text, View, TextInput, Button } from 'react-native';
-import firebase from 'firebase/app';
-import { global_style, primaryColor, secondaryColor } from '../../constants/style';
+import { StyleSheet, ScrollView, SafeAreaView, Text, View, TextInput, Button } from 'react-native';
+import { global_style, secondaryColor } from '../../constants/style';
 import { emailSignup } from '../../data/FirebaseHandler'
 import Item from '../../components/Item';
-import InlineError from '../../components/InlineError';
-import { requires } from '../../business/GeneralLogic';
 import SubmitFormButton from '../../components/SubmitFormButton';
 
 //const auth = firebase.auth();
@@ -16,27 +13,12 @@ const SignupScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordVisibility, setPasswordVisibility] = useState(true);
-  const [rightIcon, setRightIcon] = useState('eye');
-  const [signupError, setSignupError] = useState('');
-
-  const handlePasswordVisibility = () => {
-    if (rightIcon === 'eye') {
-      setRightIcon('eye-off');
-      setPasswordVisibility(!passwordVisibility);
-    } else if (rightIcon === 'eye-off') {
-      setRightIcon('eye');
-      setPasswordVisibility(!passwordVisibility);
-    }
-  };
-
-
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
 
-      <View style={global_style.textForm}>
-        <Item title="Thanks for getting started, you community will be grateful!" />
+      <ScrollView style={global_style.textForm}>
+        <Item title="Thanks for getting started, you community will be grateful!" style={global_style.item}/>
 
         <Text style={{ fontSize: 22, fontWeight: "700", margin: 10 }}>
           For your Restaurants:
@@ -52,7 +34,7 @@ const SignupScreen = ({ navigation }) => {
         />
         <TextInput
           style={global_style.inputBox}
-          placeholder='Restaurant name'
+          placeholder='Restaurant address'
           value={location}
           onChangeText={text => setLocation(text)}
         />
@@ -71,14 +53,14 @@ const SignupScreen = ({ navigation }) => {
           leftIcon='lock'
           placeholder='Enter password'
           autoCapitalize='none'
-          secureTextEntry={passwordVisibility}
+          secureTextEntry={true}
           textContentType='password'
-          rightIcon={rightIcon}
           value={password}
           onChangeText={text => setPassword(text)}
-          handlePasswordVisibility={handlePasswordVisibility}
         />
-        <SubmitFormButton title='Signup' onPress={() => emailSignup(name, location, email, password)}
+        <SubmitFormButton title='Signup' onPress={() => emailSignup(name, location, email, password,
+          () => navigation.navigate("Success Page")
+        )}
           dataRequired={[name, location, email, password]} />
 
         {/* <Text style={styles.errorText}>{signupError}</Text> */}
@@ -90,10 +72,8 @@ const SignupScreen = ({ navigation }) => {
         <Button title='Signup' color={primaryColor}
           onPress={() => emailSignup(name, location, email, password)}      /> */}
         <View style={global_style.separator} />
-        <Button title='Go to Login' color={secondaryColor} //'#7387bd'
-          onPress={() => navigation.navigate('Add Menu')}
-        />
-      </View>
+        <Button title='Go to Login' color={secondaryColor} onPress={() => navigation.navigate('Restaurant Login')} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
