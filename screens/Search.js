@@ -5,6 +5,8 @@ import { StyleSheet, Text, View, Dimensions, Button, SafeAreaView } from 'react-
 import * as Location from 'expo-location';
 import { SelectedDiet } from '../components/SelectedDiet';
 import { ScrollView } from 'react-native-gesture-handler';
+import RestaurantsMap, { generateMarkers } from '../components/RestaurantMap';
+import { getRestaurants } from '../data/FirebaseHandler';
 
 const Search = ({ navigation }) => {
 
@@ -18,6 +20,7 @@ const Search = ({ navigation }) => {
   //const { latitude, longitude } = coords
   let latitude = -41.28490626239493
   let longitude = 174.77791627205266
+  getRestaurants()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -25,7 +28,10 @@ const Search = ({ navigation }) => {
         <SelectedDiet compact={true}/>
       </ScrollView>
       <Text>Search</Text>
-      <MapView
+      <RestaurantsMap/>
+      
+      {/* stopMarkers={generateMarkers() 
+        <MapView
         style={styles.map}
         initialRegion={{
           latitude: latitude, //37.78825,
@@ -33,7 +39,7 @@ const Search = ({ navigation }) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>
-      </MapView>
+      </MapView> */}
       {/* <Text>Search Bar</Text> */}
 
     </SafeAreaView>

@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+import { collection, query, where, getDocs } from "firebase/firestore";
 import 'firebase/firestore'
 import 'firebase/auth'
 import { requires } from '../business/GeneralLogic';
@@ -89,7 +90,6 @@ export async function signInWithEmail(email, password) {
  *
  * @param email: Of user account.
  * @param password: Of user account
- * @return AuthenticationResponse: Containing success / failure and error message.
  */
 export const emailSignup = async (name, address, email, password, onSuccess) => {
     if (requires[name, address, email, password] != null) {
@@ -102,11 +102,11 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
 
     //Request permission to validate the address
     let { status } = await Location.requestForegroundPermissionsAsync();
-    console.log("Location request "+status)
+    console.log("Location request " + status)
     //Geocode an address string to latitude-longitude location
     let location = await Location.geocodeAsync(address);
     if (location == null) { return null; }
-    console.log("Selected location "+location.latitude +" "+ location.longitude)
+    console.log("Selected location " + location.latitude + " " + location.longitude)
 
     //Default value if the address is invalid
     let latitude = location.latitude
@@ -116,9 +116,9 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
         latitude = '-41.29017925997491'
         longitude = '174.76838958609653'
     }
-    
+
     console.log("Ready to add a user")
-    
+
     await firebase.auth()
         .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
@@ -126,9 +126,9 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
                 displayName: name
             })
             //.finally()
-            
 
-            console.log("Added login for "+name)
+
+            console.log("Added login for " + name)
             // // Signed in 
             // const user = userCredential.user;
             // alert("Sign Up Successfully")
@@ -149,6 +149,21 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
 //=================================================================//
 //                     MENU AND MEALS OPERATIONS                   //
 //=================================================================//
+
+
+
+export const getRestaurants = async () => {
+    //const q = query(firebase.firestore().collection('restaurant')); //, where("capital", "==", true)
+
+    const querySnapshot = await firebase.firestore().collection('restaurant').get()//await getDocs(q);
+    // querySnapshot.docs.map((doc) => {
+    //     // doc.data() is never undefined for query doc snapshots
+    //     console.log(doc.id + " => " + JSON.stringify(doc.data()));
+    // });
+    return querySnapshot.docs;
+}
+
+
 
 export const addRestaurant = (latitude, longitude) => {
     const user = firebase.auth().currentUser;
@@ -207,23 +222,4 @@ export const suggestDietaryTag = (dietTag) => {
         submitted: Date.now()
     })
     console.log("Suggestion added")
-}
-
-/**
- * Describes the return type of requests.
- */
-export class AuthenticationResponse {
-    //public success: boolean;
-    //public errorMessage: string | null;
-
-    /**
-     * Describes the return type of requests.
-     *
-     * @param success: `true` if successful, `false` otherwise.
-     * @param errorMessage: (Optional) to notify user.
-     */
-    constructor(success, errorMessage) {
-        this.success = success;
-        this.errorMessage = (errorMessage) ? errorMessage : null;
-    }
 }
