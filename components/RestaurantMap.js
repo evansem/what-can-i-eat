@@ -25,7 +25,8 @@ class RestaurantsMap extends Component {
         getRestaurants().then(e => {         
             this.state.stopMarkers = e
             this.forceUpdate()
-        })
+        }).catch(e =>
+            console.log(e))
     }
 
     render() {
@@ -33,7 +34,11 @@ class RestaurantsMap extends Component {
             <View style={global_style.container} >
                 <MapView style={styles.map}
                     region={this.state.region}
+
+                    //Adds Marker for user's location
                     showsUserLocation={true}>
+                        {this.state.stopMarkers.map((marker) => {
+                            console.log(marker.id)})}
                     
                     {this.state.stopMarkers.map((marker) => (
                         //Generate stop markers for all the data loaded from database
@@ -50,25 +55,16 @@ class RestaurantsMap extends Component {
                             }}>
                             <Callout onPress={() => {
                                 //Once users click on the name label show the menu
-                                console.log("Callout")
-                                //{this.props.navigation}
+                                //console.log("Callout")
+                                this.props.navigation.navigate('Menu', {
+                                    restaurant: marker,
+                                })
                             }}>
                                 {/* Label shown when the marker is clicked */}
                                 <Text>{marker.data().name}</Text>
                             </Callout>
                         </Marker>
                     ))}
-
-                    {/* Marker for user's location */}
-                    < Marker key={0} coordinate={{
-                        latitude: -41.28712096816978,
-                        longitude: 174.7786431743745,
-                    }}>
-                        {/* Custom marker icon to differentiate from restaurats */}
-                        <View style={styles.userMarker}>
-                            <Text style={{ color: '#fff' }}>You</Text>
-                        </View>
-                    </Marker>
                 </MapView>
             </View >
         )

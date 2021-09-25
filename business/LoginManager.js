@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { DrawerItem } from '@react-navigation/drawer';
 import firebase from "firebase/app";
 import { databaseInit } from '../data/FirebaseHandler'
-import { Text } from "react-native";
+import { Text, SafeAreaView } from "react-native";
 import Login from "../screens/restaurant/Login";
 
 /**
@@ -103,11 +103,17 @@ export const getDisplayName = (user) => {
 // }
 
 export const loginLabel = (user) => {
-    if (user != null) return <DrawerItem
-        label={"Logged in as: " + user.displayName + " (restaurant access)"} />
-        //
-        // style={{alignContent: 'center'}}/>
-    //         onPress={() => console.log("hi")}
+    return (
+        <ShowIfLoggedIn pageSupplier={
+            (user) => {
+                return (
+                    <DrawerItem label={"Logged in as: " + user.displayName + " (restaurant access)"} />
+                )
+            }
+
+        } orElse={<></>
+        } />
+    )
 }
 
 export default UserProvider;

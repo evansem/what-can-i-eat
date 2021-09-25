@@ -8,7 +8,7 @@ import { checkLogin, getDisplayName, ShowIfLoggedIn, UserContext } from '../../b
 import { addMeal } from '../../data/FirebaseHandler';
 import InlineError from '../../components/InlineError';
 import { DietryOptions } from '../../business/DietaryManager';
-import { getDefaultDietTags } from '../../data/DietaryHandler'
+import { extractSelection, getDefaultDietTags } from '../../data/DietaryHandler'
 import { render } from 'react-dom';
 
 
@@ -54,8 +54,13 @@ const AddMenu = ({ navigation }) => {
                 if (meal == undefined || meal.trim() === "") {
                   setMealError("Meal name required");
                 } else {
+                  //remove possible error which happened before
                   setMealError(null)
-                  addMeal(user, meal)
+                  //submit the data
+                  addMeal(user, meal, extractSelection(dietTags))
+                  //remove selection on the checkboxes
+                  setDietTags(defaultTags)
+                  //inform user
                   navigation.navigate("Success Page");
                 }
               }} />

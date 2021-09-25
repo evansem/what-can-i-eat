@@ -85,6 +85,22 @@ export async function signInWithEmail(email, password) {
 //=================================================================//
 //                              REGISTRATION                       //
 //=================================================================//
+
+/**
+ * Given an address it calulates its coordinates 
+ * based on first result returned by the geo-location decoder
+ */
+export const getAddressCoordinates = async (address) => {
+    //Request permission to validate the address
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    console.log("Location request " + status)
+    //Geocode an address string to latitude-longitude location
+    let location = await Location.geocodeAsync(address);
+    if (location == null) { return null; }
+    console.log("Selected location " + location[0].latitude + " " + location[0].longitude)
+
+    return location[0]
+}
 /**
  * Signs into a user with provided credentials.
  *
@@ -100,19 +116,14 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
     //if (!email) return new AuthenticationResponse(false, 'Email is required');
     //if (!password) return new AuthenticationResponse(false, 'Password is required')
 
-    //Request permission to validate the address
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    console.log("Location request " + status)
-    //Geocode an address string to latitude-longitude location
-    let location = await Location.geocodeAsync(address);
-    if (location == null) { return null; }
-    console.log("Selected location " + location.latitude + " " + location.longitude)
+    let location = getAddressCoordinates(address)
 
     //Default value if the address is invalid
     let latitude = location.latitude
     let longitude = location.longitude
 
     if (!latitude) {
+        //Default location
         latitude = '-41.29017925997491'
         longitude = '174.76838958609653'
     }
@@ -141,7 +152,7 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
             //return new AuthenticationResponse(false, error.message);
         });
 
-    addRestaurant(latitude, longitude)
+    addRestaurant(name, latitude, longitude)
     console.log("Added restaurant page")
     onSuccess()
 };
@@ -151,22 +162,28 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
 //=================================================================//
 
 
-
+/**
+ * 
+ * Usual use:
+ *  .map((doc) => {
+ *      doc.data() 
+ */
 export const getRestaurants = async () => {
-    //const q = query(firebase.firestore().collection('restaurant')); //, where("capital", "==", true)
+    const querySnapshot = await firebase.firestore().collection('restaurant').get()
+    return querySnapshot.docs;
+}
 
-    const querySnapshot = await firebase.firestore().collection('restaurant').get()//await getDocs(q);
-    // querySnapshot.docs.map((doc) => {
-    //     // doc.data() is never undefined for query doc snapshots
-    //     console.log(doc.id + " => " + JSON.stringify(doc.data()));
-    // });
+export const getMenu = async (restaurantID) => {
+    const querySnapshot = await firebase.firestore()
+    .collection('restaurant').doc(restaurantID)
+    .collection('menu').get()
+
     return querySnapshot.docs;
 }
 
 
 
-export const addRestaurant = (latitude, longitude) => {
-    const user = firebase.auth().currentUser;
+export const addRestaurant = (name, latitude, longitude) => {
 
     // Prevent the default form redirect
     //meal.preventDefault();
@@ -174,14 +191,14 @@ export const addRestaurant = (latitude, longitude) => {
     var uid = firebase.auth().currentUser.uid
     //console.log(user)
     firebase.firestore().collection('restaurant').doc(uid).set({
-        name: user.displayName,
+        name: name,
         latitude: latitude,
         longitude: longitude,
     })
     console.log("Restaurant added")
 }
 
-export const addMeal = (user, mealToAdd) => {
+export const addMeal = (user, mealToAdd, dietTags) => {
     // Prevent the default form redirect
     //meal.preventDefault();
     // Write a new message to the database collection menu for this restaurant
@@ -189,6 +206,7 @@ export const addMeal = (user, mealToAdd) => {
     console.log(mealToAdd)
     firebase.firestore().collection('restaurant').doc(uid).collection('menu').doc().set({
         name: mealToAdd,
+        dietTags: dietTags,
         lastModified: Date.now()
     })
     //firestore.FieldValue.serverTimestamp()
@@ -212,6 +230,9 @@ export const addMeal = (user, mealToAdd) => {
     return false;
 }
 
+/**
+ * This is invoked to list some tags that users will like to be added into the app
+ */
 export const suggestDietaryTag = (dietTag) => {
     if (dietTag == null || dietTag == "") { return null; }
     // Prevent the default form redirect
