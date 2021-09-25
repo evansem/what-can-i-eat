@@ -1,139 +1,82 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Callout, Marker } from 'react-native-maps';
 import { global_style, primaryColor } from "../constants/style";
 import { getRestaurants } from "../data/FirebaseHandler";
 
-
 class RestaurantsMap extends Component {
     constructor(props) {
         super(props)
+        //Default center of the map being displayed
         let latitude = -41.28490626239493
         let longitude = 174.77791627205266
 
         this.state = {
             stopMarkers: [],
             region: {
-                latitude: latitude, //37.78825,
-                longitude: longitude, //-122.4324,
+                latitude: latitude,
+                longitude: longitude,
                 latitudeDelta: 0.030,
                 longitudeDelta: 0.0242,
-                //latitudeDelta: 0.0922,
-                //longitudeDelta: 0.0421,
             }
         }
 
-        generateMarkers().then(e => {
+        //Loading restaurant coordiantes and data
+        getRestaurants().then(e => {         
             this.state.stopMarkers = e
-            //console.log(e)
             this.forceUpdate()
         })
     }
-    //const RestaurantsMap = () => {
-    //const [stopMarkers, setStopMarkers] = useState([]);
-
-
-
-    // let defaultStopMarkers = [{
-    //     key: "1",
-    //     latitude: -41.29017925997491,
-    //     longitude: 174.76838958609653
-    // },
-    // {
-    //     key: "2",
-    //     latitude: -41.29422164713216,
-    //     longitude: 174.77195205044046
-    // },
-    // {
-
-    //     key: "3",
-    //     latitude: -41.28631478508393,
-    //     longitude: 174.77464131849405
-    // }]
-
-
 
     render() {
         return (
             <View style={global_style.container} >
-                <MapView
-                    style={styles.map}
+                <MapView style={styles.map}
                     region={this.state.region}
-                    showsUserLocation={true}
-                >
-                    {this.state.stopMarkers}
+                    showsUserLocation={true}>
+                    
+                    {this.state.stopMarkers.map((marker) => (
+                        //Generate stop markers for all the data loaded from database
+                        <Marker
+                            key={marker.id}
+                            coordinate={{
+                                latitude: parseFloat(marker.data().latitude),
+                                longitude: parseFloat(marker.data().longitude),
+                            }}
+                            onPress={() => {
+                                selectedId = "Stop"
+                                //selectItem(marker)
+                                console.log("Marker Cliked")
+                            }}>
+                            <Callout onPress={() => {
+                                //Once users click on the name label show the menu
+                                console.log("Callout")
+                                //{this.props.navigation}
+                            }}>
+                                {/* Label shown when the marker is clicked */}
+                                <Text>{marker.data().name}</Text>
+                            </Callout>
+                        </Marker>
+                    ))}
 
-
-                    <Marker key={0} coordinate={{
+                    {/* Marker for user's location */}
+                    < Marker key={0} coordinate={{
                         latitude: -41.28712096816978,
                         longitude: 174.7786431743745,
                     }}>
-
+                        {/* Custom marker icon to differentiate from restaurats */}
                         <View style={styles.userMarker}>
                             <Text style={{ color: '#fff' }}>You</Text>
                         </View>
                     </Marker>
-
                 </MapView>
-            </View>
+            </View >
         )
     }
 
 }
 
-/**
-* Generate stop markers for all the data given to the object through a prop from local storage.
-*/
-export async function generateMarkers() {
-    // if (!props.stopMarkers || stopMarkers.length !== 0) return;
-    let defaultStopMarkers = [{
-        key: "1",
-        latitude: -41.29017925997491,
-        longitude: 174.76838958609653
-    },
-    {
-        key: "2",
-        latitude: -41.29422164713216,
-        longitude: 174.77195205044046
-    },
-    {
-
-        key: "3",
-        latitude: -41.28631478508393,
-        longitude: 174.77464131849405
-    }]
-
-    let markers = await getRestaurants()
-    markers.map((doc) => {
-        //     // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id + " => " + JSON.stringify(doc.data()));
-    })
-    return markers.map((marker) => (
-
-        <Marker
-            key={marker.id}
-            coordinate={{
-                latitude: marker.data.latitude,
-                longitude: marker.data.longitude,
-            }}
-            onPress={() => {
-                selectedId = "Stop"
-                //selectItem(marker)
-                console.log("Marker Cliked")
-            }}
-        >
-            <Callout onPress={() => {
-                //Once users click on the name show the menu
-                console.log("Callout")
-            }}>
-                <Text>{marker.data.name}</Text>
-            </Callout>
-        </Marker>
-    ))
-}
-
-
-
+//Specific style only for this page
 const styles = StyleSheet.create({
     container: {
         flex: 1,
