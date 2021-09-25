@@ -17,7 +17,7 @@ export default function SideDrawerMenu() {
     return (
         <NavigationContainer>
             <Drawer.Navigator
-                initialRouteName="Search" //Add Menu" //"Home" 
+                initialRouteName="Menu" //"Home" 
                 backBehavior="history"
                 screenOptions={{
                     headerTitle: props => <SmallLogo {...props} />,

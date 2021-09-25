@@ -85,6 +85,22 @@ export async function signInWithEmail(email, password) {
 //=================================================================//
 //                              REGISTRATION                       //
 //=================================================================//
+
+/**
+ * Given an address it calulates its coordinates 
+ * based on first result returned by the geo-location decoder
+ */
+export const getAddressCoordinates = async (address) => {
+    //Request permission to validate the address
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    console.log("Location request " + status)
+    //Geocode an address string to latitude-longitude location
+    let location = await Location.geocodeAsync(address);
+    if (location == null) { return null; }
+    console.log("Selected location " + location[0].latitude + " " + location[0].longitude)
+
+    return location[0]
+}
 /**
  * Signs into a user with provided credentials.
  *
@@ -100,19 +116,14 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
     //if (!email) return new AuthenticationResponse(false, 'Email is required');
     //if (!password) return new AuthenticationResponse(false, 'Password is required')
 
-    //Request permission to validate the address
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    console.log("Location request " + status)
-    //Geocode an address string to latitude-longitude location
-    let location = await Location.geocodeAsync(address);
-    if (location == null) { return null; }
-    console.log("Selected location " + location.latitude + " " + location.longitude)
+    let location = getAddressCoordinates(address)
 
     //Default value if the address is invalid
     let latitude = location.latitude
     let longitude = location.longitude
 
     if (!latitude) {
+        //Default location
         latitude = '-41.29017925997491'
         longitude = '174.76838958609653'
     }
@@ -226,6 +237,9 @@ export const addMeal = (user, mealToAdd, dietTags) => {
     return false;
 }
 
+/**
+ * This is invoked to list some tags that users will like to be added into the app
+ */
 export const suggestDietaryTag = (dietTag) => {
     if (dietTag == null || dietTag == "") { return null; }
     // Prevent the default form redirect

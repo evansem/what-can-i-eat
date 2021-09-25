@@ -54,8 +54,13 @@ const AddMenu = ({ navigation }) => {
                 if (meal == undefined || meal.trim() === "") {
                   setMealError("Meal name required");
                 } else {
+                  //remove possible error which happened before
                   setMealError(null)
+                  //submit the data
                   addMeal(user, meal, dietTags)
+                  //remove selection on the checkboxes
+                  setDietTags(defaultTags)
+                  //inform user
                   navigation.navigate("Success Page");
                 }
               }} />

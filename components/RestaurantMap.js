@@ -33,6 +33,8 @@ class RestaurantsMap extends Component {
             <View style={global_style.container} >
                 <MapView style={styles.map}
                     region={this.state.region}
+                    
+                    //Adds Marker for user's location
                     showsUserLocation={true}>
                     
                     {this.state.stopMarkers.map((marker) => (
@@ -60,17 +62,6 @@ class RestaurantsMap extends Component {
                             </Callout>
                         </Marker>
                     ))}
-
-                    {/* Marker for user's location */}
-                    < Marker key={0} coordinate={{
-                        latitude: -41.28712096816978,
-                        longitude: 174.7786431743745,
-                    }}>
-                        {/* Custom marker icon to differentiate from restaurats */}
-                        <View style={styles.userMarker}>
-                            <Text style={{ color: '#fff' }}>You</Text>
-                        </View>
-                    </Marker>
                 </MapView>
             </View >
         )

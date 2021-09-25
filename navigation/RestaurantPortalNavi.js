@@ -43,7 +43,7 @@ const SuccessPage = ({ navigation }) => {
     return (
         <ConfirmationPage message="Operation succeeded"
             buttonText='Go to restaurant portal'
-            buttonAction={() => navigation.navigate('Restaurant Portal')} />
+            buttonAction={() => navigation.popToTop()} />
     )
 }
 
