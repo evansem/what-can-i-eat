@@ -33,7 +33,11 @@ const Preferences = ({ navigation }) => {
                         <View style={global_style.checkboxContainer}>
                             <DietryOptions dietData={data} updateData={updateData} />
 
-                            <Button onPress={() => navigation.push('AckDiet')} title="Submit" color={primaryColor} />
+                            <Button onPress={
+                                () => navigation.navigate('AckDiet', {
+                                    selected: data,
+                                })
+                                } title="Submit" color={primaryColor} />
 
                         </View>
 

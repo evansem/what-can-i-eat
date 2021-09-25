@@ -30,9 +30,6 @@ export const databaseInit = () => {
     } else {
         firebase.app();
     }
-
-    //const auth = firebase.auth();
-    //const firestore = firebase.firestore();
 }
 
 //=================================================================//
@@ -71,14 +68,6 @@ export async function signInWithEmail(email, password) {
         })
         .catch(error => {
             console.log(error.message);
-            // let errorCode = error.code;
-            // let errorMessage = error.message;
-            // if (errorCode == 'auth/weak-password') {
-            //     this.onLoginFailure.bind(this)('Weak Password!');
-            // } else {
-            //     console.log("Err coming")
-            //     this.onLoginFailure.bind(this)(errorMessage);
-            // }
         });
 }
 
@@ -108,13 +97,11 @@ export const getAddressCoordinates = async (address) => {
  * @param password: Of user account
  */
 export const emailSignup = async (name, address, email, password, onSuccess) => {
+    //Preconditions
     if (requires[name, address, email, password] != null) {
         console.log("unsufficient data supplied")
         return null;
     }
-    //Preconditions
-    //if (!email) return new AuthenticationResponse(false, 'Email is required');
-    //if (!password) return new AuthenticationResponse(false, 'Password is required')
 
     let location = getAddressCoordinates(address)
 
@@ -196,8 +183,7 @@ export const addMeal = (user, mealToAdd, dietTags) => {
         dietTags: dietTags,
         lastModified: Date.now()
     })
-    //firestore.FieldValue.serverTimestamp()
-    console.log("Meal added")
+    //Alternativly firestore.FieldValue.serverTimestamp() can be used for date
     return false;
 }
 
@@ -210,5 +196,4 @@ export const suggestDietaryTag = (dietTag) => {
         name: dietTag,
         submitted: Date.now()
     })
-    console.log("Suggestion added")
 }

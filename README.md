@@ -41,13 +41,6 @@ npm install @react-navigation/native-stack
 expo install expo-location
 expo install firebase
 
-npm install
-npm install
-npm install
-npm install
-npm install
-npm install
-npm install
 ```
 
 
