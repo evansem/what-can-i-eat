@@ -13,25 +13,36 @@ export const NoSelection = ({ selected }) => {
 }
 
 export const SelectedDiet = ({ compact }) => {
-    var id = 0
-    //Compute the style for the items to display
-    var itemStyle = compact ? [global_style.item, global_style.compactItem] : global_style.item
+
     return (
         <DietContext.Consumer>
 
             {({ selected }) => (
-                <View>
-                    <Text style={global_style.title}>Selected dietary tags:</Text>
-
-                    <View style={compact ? styles.rowContainer : styles.colContainer}>
-
-                        {/* Iterate through the selected dietary tags to create a list */}
-                        {selected.map(e => <Item key={id++} title={e} style={itemStyle} />)}
-                        <NoSelection selected={selected} />
-                    </View>
-                </View>
+                <ListTags tags={selected} compact={compact} title="Your dietary tags:"/>
             )}
         </DietContext.Consumer>
+    )
+}
+
+export const ListTags = ({ tags, compact , title}) => {
+    if (!title) {
+        //Default value
+        title = "Dietary tags:"
+    }
+    var id = 0
+    //Compute the style for the items to display
+    var itemStyle = compact ? [global_style.item, global_style.compactItem] : global_style.item
+    return (
+        < View >
+            <Text style={global_style.title}>{title}</Text>
+
+            <View style={compact ? styles.rowContainer : styles.colContainer}>
+
+                {/* Iterate through the selected dietary tags to create a list */}
+                {tags.map(e => <Item key={id++} title={e} style={itemStyle} />)}
+                <NoSelection selected={tags} />
+            </View>
+        </View >
     )
 }
 
@@ -42,6 +53,5 @@ const styles = StyleSheet.create({
     },
     colContainer: {
         flex: 1,
-        // marginTop: StatusBar.currentHeight || 0,
     },
 });

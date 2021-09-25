@@ -152,7 +152,7 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
             //return new AuthenticationResponse(false, error.message);
         });
 
-    addRestaurant(latitude, longitude)
+    addRestaurant(name, latitude, longitude)
     console.log("Added restaurant page")
     onSuccess()
 };
@@ -162,35 +162,28 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
 //=================================================================//
 
 
-
+/**
+ * 
+ * Usual use:
+ *  .map((doc) => {
+ *      doc.data() 
+ */
 export const getRestaurants = async () => {
-    //const q = query(firebase.firestore().collection('restaurant')); //, where("capital", "==", true)
-
-    const querySnapshot = await firebase.firestore().collection('restaurant').get()//await getDocs(q);
-    // querySnapshot.docs.map((doc) => {
-    //     // doc.data() is never undefined for query doc snapshots
-    //     console.log(doc.id + " => " + JSON.stringify(doc.data()));
-    // });
+    const querySnapshot = await firebase.firestore().collection('restaurant').get()
     return querySnapshot.docs;
 }
 
 export const getMenu = async (restaurantID) => {
-    //const q = query(firebase.firestore().collection('restaurant')); //, where("capital", "==", true)
-
     const querySnapshot = await firebase.firestore()
     .collection('restaurant').doc(restaurantID)
-    .collection('menu').get()//await getDocs(q);
-    // querySnapshot.docs.map((doc) => {
-    //     // doc.data() is never undefined for query doc snapshots
-    //     console.log(doc.id + " => " + JSON.stringify(doc.data()));
-    // });
+    .collection('menu').get()
+
     return querySnapshot.docs;
 }
 
 
 
-export const addRestaurant = (latitude, longitude) => {
-    const user = firebase.auth().currentUser;
+export const addRestaurant = (name, latitude, longitude) => {
 
     // Prevent the default form redirect
     //meal.preventDefault();
@@ -198,7 +191,7 @@ export const addRestaurant = (latitude, longitude) => {
     var uid = firebase.auth().currentUser.uid
     //console.log(user)
     firebase.firestore().collection('restaurant').doc(uid).set({
-        name: user.displayName,
+        name: name,
         latitude: latitude,
         longitude: longitude,
     })

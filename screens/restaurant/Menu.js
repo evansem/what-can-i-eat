@@ -6,6 +6,7 @@ import Login from './Login';
 import { ShowIfLoggedIn, UserContext } from '../../business/LoginManager';
 import Item from '../../components/Item';
 import LargeButton from '../../components/LargeButton';
+import { ListTags } from '../../components/SelectedDiet';
 
 const Menu = ({ route, navigation }) => {
     if (!route.params || Object.keys(route.params).length === 0) {
@@ -78,9 +79,14 @@ class MenuTable extends Component {
 
                 {/* After arrow, round brakets need to be use so that it is interpret as a component */}
                 {this.state.menu.map((meal) => (
-                    <Item key={meal.id}
+                    <View>
+                        <Item key={meal.id}
                         title={meal.data().name} style={global_style.item} />
+                        <ListTags tags={meal.data().dietTags} compact={true} />
+                    </View>
+                    
                 ))}
+
 
             </ScrollView>
         )

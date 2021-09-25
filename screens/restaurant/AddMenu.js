@@ -8,7 +8,7 @@ import { checkLogin, getDisplayName, ShowIfLoggedIn, UserContext } from '../../b
 import { addMeal } from '../../data/FirebaseHandler';
 import InlineError from '../../components/InlineError';
 import { DietryOptions } from '../../business/DietaryManager';
-import { getDefaultDietTags } from '../../data/DietaryHandler'
+import { extractSelection, getDefaultDietTags } from '../../data/DietaryHandler'
 import { render } from 'react-dom';
 
 
@@ -57,7 +57,7 @@ const AddMenu = ({ navigation }) => {
                   //remove possible error which happened before
                   setMealError(null)
                   //submit the data
-                  addMeal(user, meal, dietTags)
+                  addMeal(user, meal, extractSelection(dietTags))
                   //remove selection on the checkboxes
                   setDietTags(defaultTags)
                   //inform user

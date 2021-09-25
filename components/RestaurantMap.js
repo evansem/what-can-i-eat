@@ -25,7 +25,8 @@ class RestaurantsMap extends Component {
         getRestaurants().then(e => {         
             this.state.stopMarkers = e
             this.forceUpdate()
-        })
+        }).catch(e =>
+            console.log(e))
     }
 
     render() {
@@ -33,9 +34,11 @@ class RestaurantsMap extends Component {
             <View style={global_style.container} >
                 <MapView style={styles.map}
                     region={this.state.region}
-                    
+
                     //Adds Marker for user's location
                     showsUserLocation={true}>
+                        {this.state.stopMarkers.map((marker) => {
+                            console.log(marker.id)})}
                     
                     {this.state.stopMarkers.map((marker) => (
                         //Generate stop markers for all the data loaded from database

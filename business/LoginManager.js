@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { DrawerItem } from '@react-navigation/drawer';
 import firebase from "firebase/app";
 import { databaseInit } from '../data/FirebaseHandler'
-import { Text } from "react-native";
+import { Text, SafeAreaView } from "react-native";
 import Login from "../screens/restaurant/Login";
 
 /**
