@@ -7,6 +7,10 @@ import * as FileSystem from 'expo-file-system';
  */
 export const dietData = require('../assets/diet.json')
 
+export const getDefaultDietTags = () => {
+    return dietData
+}
+
 /**
  * Store path to the prefences stored in the user local storage.
  * Expo file system creates a separate storage space for each app
@@ -32,7 +36,7 @@ export const loadPreferences = (updateData, updateSelected, forceUpdate) => {
             updateSelected(extractSelection(data))
             //And once the file has been loaded and the data updated we need to re-render the checkboxes
             forceUpdate()
-            console.log("Dietary requirements have been loaded from disk")
+            //console.log("Dietary requirements have been loaded from disk")
         })
         .catch(error => {
             //This will always be triggered the real first time the page is opened

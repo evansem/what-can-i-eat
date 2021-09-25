@@ -46,7 +46,7 @@ const Preferences = ({ navigation }) => {
 
                 <DietContext.Consumer>
                     {({ data, updateData, updateSelected }) => (
-                        <View style={styles.checkboxContainer}>
+                        <View style={global_style.checkboxContainer}>
                             <DietryOptions dietData={data} updateData={updateData} />
 
                             <Button onPress={() => navigation.push('AckDiet')} title="Submit" color={primaryColor} />
@@ -77,14 +77,5 @@ const Preferences = ({ navigation }) => {
         </SafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    checkboxContainer: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "space-evenly",
-        margin: 40,
-    },
-});
 
 export default Preferences

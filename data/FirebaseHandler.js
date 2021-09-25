@@ -1,6 +1,9 @@
 import firebase from 'firebase/app';
+import { collection, query, where, getDocs } from "firebase/firestore";
 import 'firebase/firestore'
 import 'firebase/auth'
+import { requires } from '../business/GeneralLogic';
+import * as Location from 'expo-location';
 
 
 //=================================================================//
@@ -22,7 +25,7 @@ export const databaseInit = () => {
 
     // Check if firebase have already been intialize 
     if (!firebase.apps.length) {
-        console.log("Initializing Firebase app...")
+        //console.log("Initializing Firebase app...")
         firebase.initializeApp(firebaseConfig);
     } else {
         firebase.app();
@@ -37,13 +40,15 @@ export const databaseInit = () => {
 //=================================================================//
 
 export async function signOut() {
+    var message = ''
     await firebase.auth().signOut().then(() => {
         // Sign-out successful.
-        console.log("Logout successfully")
+        message = "Logout successfully"
     }).catch((error) => {
         // An error happened.
-        console.log("Couldn't logout")
+        message = "Couldn't logout"
     });
+    return message
 }
 
 // Listen for authentication state to change.
@@ -77,52 +82,101 @@ export async function signInWithEmail(email, password) {
         });
 }
 
+//=================================================================//
+//                              REGISTRATION                       //
+//=================================================================//
 /**
  * Signs into a user with provided credentials.
  *
  * @param email: Of user account.
  * @param password: Of user account
- * @return AuthenticationResponse: Containing success / failure and error message.
  */
-export const emailSignup = async (name, email, password) => {
-    //Preconditions
-    if (!email) return new AuthenticationResponse(false, 'Email is required');
-    if (!password) return new AuthenticationResponse(false, 'Password is required')
-
-    if (email !== '' && password !== '') {
-        await firebase.auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                return userCredential.user.updateProfile({
-                    displayName: name
-                }).finally()
-                console.log(name)
-                // Signed in 
-                const user = userCredential.user;
-                alert("Sign Up Successfully")
-                //navigation.navigate("Add Menu")
-                return new AuthenticationResponse(true);
-            })
-            .catch(error => {
-                //console.log(error);
-                //setSignupError(error.message);
-                return new AuthenticationResponse(false, error.message);
-            });
+export const emailSignup = async (name, address, email, password, onSuccess) => {
+    if (requires[name, address, email, password] != null) {
+        console.log("unsufficient data supplied")
+        return null;
     }
+    //Preconditions
+    //if (!email) return new AuthenticationResponse(false, 'Email is required');
+    //if (!password) return new AuthenticationResponse(false, 'Password is required')
+
+    //Request permission to validate the address
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    console.log("Location request " + status)
+    //Geocode an address string to latitude-longitude location
+    let location = await Location.geocodeAsync(address);
+    if (location == null) { return null; }
+    console.log("Selected location " + location.latitude + " " + location.longitude)
+
+    //Default value if the address is invalid
+    let latitude = location.latitude
+    let longitude = location.longitude
+
+    if (!latitude) {
+        latitude = '-41.29017925997491'
+        longitude = '174.76838958609653'
+    }
+
+    console.log("Ready to add a user")
+
+    await firebase.auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            userCredential.user.updateProfile({
+                displayName: name
+            })
+            //.finally()
+
+
+            console.log("Added login for " + name)
+            // // Signed in 
+            // const user = userCredential.user;
+            // alert("Sign Up Successfully")
+            // //navigation.navigate("Add Menu")
+            // return new AuthenticationResponse(true);
+        })
+        .catch(error => {
+            console.log(error);
+            //setSignupError(error.message);
+            //return new AuthenticationResponse(false, error.message);
+        });
+
+    addRestaurant(latitude, longitude)
+    console.log("Added restaurant page")
+    onSuccess()
 };
 
 //=================================================================//
 //                     MENU AND MEALS OPERATIONS                   //
 //=================================================================//
 
-export const addRestaurant = (user, mealToAdd) => {
+
+
+export const getRestaurants = async () => {
+    //const q = query(firebase.firestore().collection('restaurant')); //, where("capital", "==", true)
+
+    const querySnapshot = await firebase.firestore().collection('restaurant').get()//await getDocs(q);
+    // querySnapshot.docs.map((doc) => {
+    //     // doc.data() is never undefined for query doc snapshots
+    //     console.log(doc.id + " => " + JSON.stringify(doc.data()));
+    // });
+    return querySnapshot.docs;
+}
+
+
+
+export const addRestaurant = (latitude, longitude) => {
+    const user = firebase.auth().currentUser;
+
     // Prevent the default form redirect
     //meal.preventDefault();
     // Write a new message to the database collection "restaurant"
     var uid = firebase.auth().currentUser.uid
     //console.log(user)
     firebase.firestore().collection('restaurant').doc(uid).set({
-        name: user.displayName
+        name: user.displayName,
+        latitude: latitude,
+        longitude: longitude,
     })
     console.log("Restaurant added")
 }
@@ -133,13 +187,13 @@ export const addMeal = (user, mealToAdd) => {
     // Write a new message to the database collection menu for this restaurant
     var uid = firebase.auth().currentUser.uid
     console.log(mealToAdd)
-    firebase.firestore().collection('restaurant').doc(uid).collection('menu').doc('s').set({
-        name: "mealToAdd",
+    firebase.firestore().collection('restaurant').doc(uid).collection('menu').doc().set({
+        name: mealToAdd,
         lastModified: Date.now()
     })
     //firestore.FieldValue.serverTimestamp()
     console.log("Meal added")
-    
+
     // .add({ //doc(user.uid).set({
     //     text: mealToAdd,
     //     timestamp: Date.now(),
@@ -150,7 +204,7 @@ export const addMeal = (user, mealToAdd) => {
     //     console.log(firebase.firestore().collection('restaurant'))
     // )
 
-    
+
 
     // clear message input field
     //input.value = '';
@@ -159,7 +213,7 @@ export const addMeal = (user, mealToAdd) => {
 }
 
 export const suggestDietaryTag = (dietTag) => {
-    if(dietTag == null || dietTag == "") { return null; }
+    if (dietTag == null || dietTag == "") { return null; }
     // Prevent the default form redirect
     //meal.preventDefault();
     //console.log(user)
@@ -168,23 +222,4 @@ export const suggestDietaryTag = (dietTag) => {
         submitted: Date.now()
     })
     console.log("Suggestion added")
-}
-
-/**
- * Describes the return type of requests.
- */
-export class AuthenticationResponse {
-    //public success: boolean;
-    //public errorMessage: string | null;
-
-    /**
-     * Describes the return type of requests.
-     *
-     * @param success: `true` if successful, `false` otherwise.
-     * @param errorMessage: (Optional) to notify user.
-     */
-    constructor(success, errorMessage) {
-        this.success = success;
-        this.errorMessage = (errorMessage) ? errorMessage : null;
-    }
 }

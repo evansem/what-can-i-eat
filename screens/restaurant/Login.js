@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { signInWithEmail } from '../data/FirebaseHandler';
-import { global_style, primaryColor, secondaryColor } from '../constants/style';
-import ErrorMessage from '../components/ErrorMessage'
+import { signInWithEmail } from '../../data/FirebaseHandler';
+import { global_style, primaryColor, secondaryColor } from '../../constants/style';
+import ErrorMessage from '../../components/ErrorMessage'
 
 const Separator = () => <View style={global_style.separator} />;
 

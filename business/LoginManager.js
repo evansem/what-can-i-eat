@@ -3,7 +3,7 @@ import { DrawerItem } from '@react-navigation/drawer';
 import firebase from "firebase/app";
 import { databaseInit } from '../data/FirebaseHandler'
 import { Text } from "react-native";
-import Login from "../screens/Login";
+import Login from "../screens/restaurant/Login";
 
 /**
  * The context containing the user profile to be exposed to the rest of the application.
@@ -31,7 +31,7 @@ export const UserProvider = (props) => {
     // }
     async function onAuthStateChanged(user) {
         //if (user != null) {
-        console.log('Manager: setting user');
+        //console.log('Manager: setting user');
         setUser(user);
         if (initializing) setInitializing(false);
         //await generateUserDocument(user).then(() => syncSavedData(user));
@@ -105,6 +105,7 @@ export const getDisplayName = (user) => {
 export const loginLabel = (user) => {
     if (user != null) return <DrawerItem
         label={"Logged in as: " + user.displayName + " (restaurant access)"} />
+        //
         // style={{alignContent: 'center'}}/>
     //         onPress={() => console.log("hi")}
 }

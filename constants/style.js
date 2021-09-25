@@ -4,23 +4,49 @@ const primaryColor = '#008037'
 const secondaryColor = '#DBB700' //FF914D'
 
 const global_style = StyleSheet.create({
+  //=================================================================//
+  //                       WRAPPERS AND BOXES                        //
+  //=================================================================//
   container: {
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
     margin: 5,
-    padding: 10
-
+    padding: 10,
+    justifyContent: 'center',
   },
   softContainer: {
     margin: 40,
     fontSize: 18,
     alignItems: "center",
   },
+  item: {
+    backgroundColor: primaryColor,
+    padding: 15,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    //primary colour in dec with opacity
+    backgroundColor: 'rgba(00,128,55, 0.3)',
+    borderRadius: 5,
+    alignItems: "center",
+    minWidth: 100
+  },
+  compactItem: {
+    padding: 10
+  },
   mainHeader: {
     fontSize: 32,
     fontWeight: "700"
   },
+  //=================================================================//
+  //                       INPUT AND BUTTONS                         //
+  //=================================================================//
+  checkboxContainer: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    margin: 40,
+},
   primaryButton: {
     backgroundColor: primaryColor,
     padding: 100,
@@ -34,7 +60,8 @@ const global_style = StyleSheet.create({
     borderColor: "#707070",
     borderBottomWidth: 1,
     paddingBottom: 1.5,
-    marginTop: 25.5
+    marginTop: 15,
+    marginBottom: 10
   },
   separator: {
     marginVertical: 22,
@@ -42,9 +69,9 @@ const global_style = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
 
-//=================================================================//
-//                           STYLE FOR TEXT                        //
-//=================================================================//
+  //=================================================================//
+  //                           STYLE FOR TEXT                        //
+  //=================================================================//
   textForm: {
     width: "80%",
     margin: "10%"
@@ -61,6 +88,7 @@ const global_style = StyleSheet.create({
   title: {
     fontSize: 20,
     textAlign: 'justify',
+    justifyContent: 'space-between',
   },
   h2: {
     fontSize: 18,

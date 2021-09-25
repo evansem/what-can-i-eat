@@ -1,59 +1,24 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native';
-import Preferences from './diet/Preferences';
 import { global_style, primaryColor } from '../constants/style';
+import LargeButton from '../components/LargeButton';
 //import Dimensions from "react-native";
 
 const Welcome = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <View style={global_style.container}>
 
-      <Text style={styles.title}>
+      <Text style={[global_style.title, {fontSize: 30}]}>
         Welcome!
       </Text>
 
-      {/* Pressable */}
-      <TouchableOpacity 
-        style={styles.largeButton}
-        onPress={() => navigation.navigate("Preferences")}>
-        <Text style={styles.text}>What can I eat?</Text>
-      </TouchableOpacity>
+      <LargeButton onPress={() => navigation.navigate("Preferences")} title="What can I eat?" />
 
-      <TouchableOpacity 
-        style={styles.largeButton}
-        onPress={() => alert("Welcome")}>
-        <Text style={styles.text}>Add a menu</Text>
-      </TouchableOpacity>
-    </View>
+      <LargeButton onPress={() => navigation.navigate("Restaurant Portal")} title="Add a menu" />
+      </View>
   );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  largeButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 30,
-    //paddingHorizontal: 32,
-    borderRadius: 4,
-    backgroundColor: primaryColor,
-    width: 300,
-    margin: 20,
-  },
-  title: {
-    justifyContent: 'space-between',
-    fontSize: 30,
-  },
-  text: {
-    fontSize: 18,
-    letterSpacing: 0.25,
-    color: 'white',
-  },
-});
+}
 
 export default Welcome
 
