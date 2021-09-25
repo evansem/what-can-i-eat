@@ -9,7 +9,7 @@ import { primaryColor } from '../constants/style';
 import UpdateDietNavi from './UpdateDietNavi';
 import RestaurantPortalNavi from './RestaurantPortalNavi';
 import Logout from '../screens/restaurant/Logout';
-import Menu from '../screens/restaurant/Menu';
+import Menu from '../screens/Menu';
 
 const Drawer = createDrawerNavigator();
 
@@ -17,13 +17,12 @@ export default function SideDrawerMenu() {
     return (
         <NavigationContainer>
             <Drawer.Navigator
-                initialRouteName="Menu" //"Home" 
+                initialRouteName="Home" 
                 backBehavior="history"
                 screenOptions={{
                     headerTitle: props => <SmallLogo {...props} />,
                     headerTitleAlign: 'center',
                     headerTitleStyle: { alignSelf: 'center' },
-                    //headerTitleStyle: {textAlign: 'center', justifyContent: 'center', alignItems: 'center'},
                     drawerActiveTintColor: primaryColor,
                 }}>
                 <Drawer.Screen name="Home" component={HomeScreen} />

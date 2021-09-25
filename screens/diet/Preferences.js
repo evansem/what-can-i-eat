@@ -1,33 +1,17 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { Formik, Form } from 'formik';
+import { Text, View, Button, ScrollView, SafeAreaView } from 'react-native';
 import { global_style, primaryColor } from '../../constants/style';
-
-import * as FileSystem from 'expo-file-system';
-
-import { DietryOptions, exportDiet, DietContext } from '../../business/DietaryManager'
-import { SelectedDiet } from '../../components/SelectedDiet'
+import { DietryOptions, DietContext } from '../../business/DietaryManager'
 import { useState } from "react/cjs/react.development";
 import { TextInput } from "react-native-gesture-handler";
 import { suggestDietaryTag } from "../../data/FirebaseHandler";
-//Expo file system creates a separate storage space for each app
-
-//Load the possible dietry tags for the source code directory
-//const DietData = require('../assets/diet.json')
-
-//const global_style = require('../style');
-
-function verifyAck(value) {
-    let error;
-    if (!value) {
-        error = 'Required';
-    }
-    return error;
-}
 
 /**
  * Creates the page which allows users to update the dietry preferences
- * Designed in the old-fashion class styled to better handle the state of multiple checkboxes
+ * 
+ * 
+ * Preferences page, allows users to update their dietary requirements and suggest some new dietary tags to add. 
+ * It has a simple checkbox look so users will know that they can click more than one option.
  */
 const Preferences = ({ navigation }) => {
 
@@ -45,7 +29,7 @@ const Preferences = ({ navigation }) => {
                 </Text>
 
                 <DietContext.Consumer>
-                    {({ data, updateData, updateSelected }) => (
+                    {({ data, updateData }) => (
                         <View style={global_style.checkboxContainer}>
                             <DietryOptions dietData={data} updateData={updateData} />
 
@@ -70,7 +54,14 @@ const Preferences = ({ navigation }) => {
                     value={suggestion}
                     onChangeText={text => setSuggestion(text)}
                 />
-                <Button onPress={() => suggestDietaryTag(suggestion)} title="Send Anonymously" color={primaryColor} />
+                <Button onPress={() => {
+                    suggestDietaryTag(suggestion)
+                    //Remmove current suggestion from input
+                    setSuggestion("")
+                     //inform user
+                    navigation.navigate("Success Page");
+                }
+                } title="Send Anonymously" color={primaryColor} />
 
 
             </ScrollView>

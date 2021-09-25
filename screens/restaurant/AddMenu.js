@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { global_style, primaryColor, secondaryColor } from '../../constants/style';
-import ErrorMessage from '../../components/ErrorMessage'
+import { TextInput, View, Button, ScrollView, SafeAreaView } from 'react-native';
+import { global_style, primaryColor } from '../../constants/style';
 import Login from './Login';
-import Item from '../../components/Item';
-import { checkLogin, getDisplayName, ShowIfLoggedIn, UserContext } from '../../business/LoginManager';
+import { ShowIfLoggedIn } from '../../business/LoginManager';
 import { addMeal } from '../../data/FirebaseHandler';
 import InlineError from '../../components/InlineError';
 import { DietryOptions } from '../../business/DietaryManager';
 import { extractSelection, getDefaultDietTags } from '../../data/DietaryHandler'
-import { render } from 'react-dom';
-
 
 const AddMenu = ({ navigation }) => {
 
@@ -26,9 +22,6 @@ const AddMenu = ({ navigation }) => {
       (user) => (
         <SafeAreaView style={global_style.container}>
           <ScrollView>
-            {/* <Item title={getDisplayName} /> */}
-
-            {/* <Button title="Login" onPress={() => checkLogin(navigation, user)} /> */}
             <TextInput
               style={global_style.inputBox}
               placeholder='Enter meal name'
@@ -39,13 +32,7 @@ const AddMenu = ({ navigation }) => {
             <View style={global_style.checkboxContainer}>
               <DietryOptions dietData={dietTags} updateData={(data) => {
                 setDietTags(data)}} />
-
-              {/* <Button onPress={() => navigation.push('AckDiet')} title="Submit" color={primaryColor} /> */}
-
             </View>
-
-
-
 
             <InlineError message={mealError} />
 
@@ -69,8 +56,6 @@ const AddMenu = ({ navigation }) => {
       )
     } orElse={<Login navigation={navigation} />} />
   )
-
-
 }
 
 

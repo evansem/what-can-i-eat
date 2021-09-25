@@ -1,10 +1,7 @@
-import React, { createContext, Component, useState } from "react";
-import { StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { createContext, Component } from "react";
+import { Text, TouchableOpacity } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { loadPreferences, savePreferences, outputFilename } from '../data/DietaryHandler'
-
-
-
 
 export const DietContext = createContext({
     //The checkbox data is stored in the diet json file
@@ -35,19 +32,16 @@ export const exportDiet = (data, updateSelected) => {
  * @param {number} id indicates the checkbox which have been clicked
  */
 const toggleCheckbox = (id, data, update) => {
-    //console.log(data)
-    // console.log("toggle")
+    //Logic to select or desect a checkox
     const index = data.findIndex(x => x.id === id);
     data[index].checked = !data[index].checked
 
+    //Use the call back function to update the state
     update(data);
-
-    //this.setState(data)
-    //console.log("On checked: "+JSON.stringify(this.state.data))
 }
 
 //export const DietProvider = (props) => {
-class DietProvider extends React.Component {
+class DietProvider extends Component {
     constructor(props) {
         super(props);
 
@@ -82,10 +76,7 @@ class DietProvider extends React.Component {
         // Provider to expose UserContext to rest of the application.
         return (
             <DietContext.Provider value={this.state}>
-                {/* {console.log("Context: "+JSON.stringify(DietContext))} */}
-
                 {this.props.children}
-                {/* {console.log("State " + JSON.stringify(this.state))} */}
             </DietContext.Provider>
         );
     }
@@ -93,13 +84,13 @@ class DietProvider extends React.Component {
 
 /**
  * Generates a form made of checkboxes
+ * Designed in the old-fashion class styled to better handle the state of multiple checkboxes
  * @returns a sequence of checkboxes created based on the dietry data currently loaded
  */
-export class DietryOptions extends React.Component {
+export class DietryOptions extends Component {
     constructor(props) {
         super(props);
     }
-    //export const DietryOptions = ({ dietData, updateData }) => {
 
     render() {
 
@@ -108,24 +99,21 @@ export class DietryOptions extends React.Component {
                 key={key}
                 onPress={() => {
                     toggleCheckbox(item.id, this.props.dietData, this.props.updateData)
+                    //Ensure tha the changes will be displayed
                     this.forceUpdate()
-                    //setData(dietData)
                 }}
             >
                 <CheckBox value={item.checked}
-                onValueChange={() => { 
-                    toggleCheckbox(item.id, this.props.dietData, this.props.updateData) 
-                    //this.forceUpdate()
-                }
-                } 
+                    onValueChange={() => {
+                        toggleCheckbox(item.id, this.props.dietData, this.props.updateData)
+                        //this.forceUpdate()
+                    }
+                    }
                 />
                 <Text>{item.key}</Text>
             </TouchableOpacity>
         ))
     }
 }
-
-
-
 
 export default DietProvider

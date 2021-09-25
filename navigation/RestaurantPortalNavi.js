@@ -4,8 +4,8 @@ import AddMenu from '../screens/restaurant/AddMenu';
 import Login from '../screens/restaurant/Login';
 import SignupScreen from '../screens/restaurant/SignUp';
 import Restaurant from '../screens/restaurant/Restaurant';
-import Menu from '../screens/restaurant/Menu';
-import ConfirmationPage from '../components/Confirmation';
+import Menu from '../screens/Menu';
+import ConfirmationPage, { SuccessPage } from '../components/Confirmation';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,18 +33,5 @@ const RestaurantPortalNavi = () => {
         </Stack.Navigator>
     );
 };
-
-/**
- * Extends the confirmation page to make it more accessible throught the restarant portal.
- * This is important so that you can navigate to it after some actions have succeeded without
- * having to use wrappers for conditional display.
- */
-const SuccessPage = ({ navigation }) => {
-    return (
-        <ConfirmationPage message="Operation succeeded"
-            buttonText='Go to restaurant portal'
-            buttonAction={() => navigation.popToTop()} />
-    )
-}
 
 export default RestaurantPortalNavi;

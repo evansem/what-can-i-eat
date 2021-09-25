@@ -136,24 +136,12 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
             userCredential.user.updateProfile({
                 displayName: name
             })
-            //.finally()
-
-
-            console.log("Added login for " + name)
-            // // Signed in 
-            // const user = userCredential.user;
-            // alert("Sign Up Successfully")
-            // //navigation.navigate("Add Menu")
-            // return new AuthenticationResponse(true);
         })
         .catch(error => {
             console.log(error);
-            //setSignupError(error.message);
-            //return new AuthenticationResponse(false, error.message);
         });
 
     addRestaurant(name, latitude, longitude)
-    console.log("Added restaurant page")
     onSuccess()
 };
 
@@ -163,7 +151,7 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
 
 
 /**
- * 
+ * Get restaurant general data 
  * Usual use:
  *  .map((doc) => {
  *      doc.data() 
@@ -173,6 +161,9 @@ export const getRestaurants = async () => {
     return querySnapshot.docs;
 }
 
+/**
+ * Get meals in a menu
+ */
 export const getMenu = async (restaurantID) => {
     const querySnapshot = await firebase.firestore()
     .collection('restaurant').doc(restaurantID)
@@ -181,15 +172,13 @@ export const getMenu = async (restaurantID) => {
     return querySnapshot.docs;
 }
 
-
-
+/**
+ * Create a new documet folder in the database with its general information
+ */
 export const addRestaurant = (name, latitude, longitude) => {
 
-    // Prevent the default form redirect
-    //meal.preventDefault();
     // Write a new message to the database collection "restaurant"
     var uid = firebase.auth().currentUser.uid
-    //console.log(user)
     firebase.firestore().collection('restaurant').doc(uid).set({
         name: name,
         latitude: latitude,
@@ -199,8 +188,6 @@ export const addRestaurant = (name, latitude, longitude) => {
 }
 
 export const addMeal = (user, mealToAdd, dietTags) => {
-    // Prevent the default form redirect
-    //meal.preventDefault();
     // Write a new message to the database collection menu for this restaurant
     var uid = firebase.auth().currentUser.uid
     console.log(mealToAdd)
@@ -211,22 +198,6 @@ export const addMeal = (user, mealToAdd, dietTags) => {
     })
     //firestore.FieldValue.serverTimestamp()
     console.log("Meal added")
-
-    // .add({ //doc(user.uid).set({
-    //     text: mealToAdd,
-    //     timestamp: Date.now(),
-    //     name: user.displayName
-    // }).then(() => {
-    //     console.log('User added!');
-    // }).catch(() =>
-    //     console.log(firebase.firestore().collection('restaurant'))
-    // )
-
-
-
-    // clear message input field
-    //input.value = '';
-    // Return false to avoid redirect
     return false;
 }
 
@@ -235,9 +206,6 @@ export const addMeal = (user, mealToAdd, dietTags) => {
  */
 export const suggestDietaryTag = (dietTag) => {
     if (dietTag == null || dietTag == "") { return null; }
-    // Prevent the default form redirect
-    //meal.preventDefault();
-    //console.log(user)
     firebase.firestore().collection('diet').add({
         name: dietTag,
         submitted: Date.now()
