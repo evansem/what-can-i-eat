@@ -148,6 +148,12 @@ export const getRestaurants = async () => {
     return querySnapshot.docs;
 }
 
+// export const getRestaurant = async (id) => {
+//     const querySnapshot = await firebase.firestore().collection('restaurant').doc(id)
+//     console.log(querySnapshot)
+//     return querySnapshot;
+// }
+
 /**
  * Get meals in a menu
  */

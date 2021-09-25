@@ -5,6 +5,7 @@ import Login from './Login';
 import { ShowIfLoggedIn } from '../../business/LoginManager';
 import Item from '../../components/Item';
 import LargeButton from '../../components/LargeButton';
+import { getRestaurant, getRestaurants } from '../../data/FirebaseHandler';
 
 const Restaurant = ({ navigation }) => {
     return (
@@ -14,8 +15,10 @@ const Restaurant = ({ navigation }) => {
                     <SafeAreaView style={global_style.container}>
                         <Item title={user.displayName} style={global_style.item} />
 
-                        <LargeButton onPress={() => navigation.navigate("Add Menu")} title="Add a meal" />
-                        <LargeButton onPress={() => navigation.navigate("Menu")} title="View your menu" />
+                        <LargeButton title="Add a meal" onPress={() => navigation.navigate("Add Menu")} />
+                        <LargeButton title="View your menu" onPress={() => navigation.navigate("Menu"
+                                    // , {restaurant: getRestaurants().finally(e => e.filter(id => id == user.uid))}
+                                    )} />
                     </SafeAreaView>
 
                 )

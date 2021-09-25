@@ -17,33 +17,9 @@ export const DietContext = createContext({
 });
 
 /**
- * Simply delegates the operation to the data layer
- * @param data object containing the updated checkbox results 
+ * Component used to provide the diet context to the rest of the app.
+ * It also includes call-back functions to facilitate the modification of the context
  */
-export const exportDiet = (data, updateSelected) => {
-    if (data == undefined || updateSelected == undefined) {
-        //Cusom error logs to help with troubleshooting
-        console.log("Diet data couldn't be exported because undefinded")
-    } else {
-        //Store the selected option in the context
-        updateSelected(savePreferences(data))
-    }
-}
-
-/**
- * Keep data in sync when toggling a given checkbox on and off
- * @param {number} id indicates the checkbox which have been clicked
- */
-const toggleCheckbox = (id, data, update) => {
-    //Logic to select or desect a checkox
-    const index = data.findIndex(x => x.id === id);
-    data[index].checked = !data[index].checked
-
-    //Use the call back function to update the state
-    update(data);
-}
-
-//export const DietProvider = (props) => {
 class DietProvider extends Component {
     constructor(props) {
         super(props);
@@ -83,6 +59,33 @@ class DietProvider extends Component {
             </DietContext.Provider>
         );
     }
+}
+
+/**
+ * Simply delegates the operation to the data layer
+ * @param data object containing the updated checkbox results 
+ */
+ export const exportDiet = (data, updateSelected) => {
+    if (data == undefined || updateSelected == undefined) {
+        //Cusom error logs to help with troubleshooting
+        console.log("Diet data couldn't be exported because undefinded")
+    } else {
+        //Store the selected option in the context
+        updateSelected(savePreferences(data))
+    }
+}
+
+/**
+ * Keep data in sync when toggling a given checkbox on and off
+ * @param {number} id indicates the checkbox which have been clicked
+ */
+const toggleCheckbox = (id, data, update) => {
+    //Logic to select or desect a checkox
+    const index = data.findIndex(x => x.id === id);
+    data[index].checked = !data[index].checked
+
+    //Use the call back function to update the state
+    update(data);
 }
 
 /**

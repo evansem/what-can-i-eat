@@ -9,10 +9,8 @@ import { databaseInit } from '../data/FirebaseHandler'
 export const UserContext = createContext(null);
 
 /**
- * This component is responsible for exposing the `UserContext` to the rest of the application. This component can have
- * one of three states (see `UserContextType`) and will update on user state change.
- *
- * @param props - None used.
+ * Component used to provide the user context to the rest of the app.
+ * It also includes call-back functions to facilitate the modification of the context
  */
 export const UserProvider = (props) => {
     // Set an initializing state whilst Firebase connects
