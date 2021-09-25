@@ -55,7 +55,7 @@ const AddMenu = ({ navigation }) => {
                   setMealError("Meal name required");
                 } else {
                   setMealError(null)
-                  addMeal(user, meal)
+                  addMeal(user, meal, dietTags)
                   navigation.navigate("Success Page");
                 }
               }} />

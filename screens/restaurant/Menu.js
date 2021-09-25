@@ -43,10 +43,11 @@ class MenuTable extends Component {
         //Loading meals for this restaurant
         getMenu(this.state.id).then(e => {
             this.state.menu = e
-            console.log(JSON.stringify(e.data()))
+            //Menu needs to be mapped first then call .data() on meals
         
             this.forceUpdate()
-        })
+        }).catch(error =>
+            console.log(error))
     }
 
     render() {
@@ -66,11 +67,11 @@ class MenuTable extends Component {
             <ScrollView>
                 <Item title={data.name} style={global_style.item} />
 
-                {this.state.menu.map((meal) => {
-                    <Item 
-                    key={meal.id}
+                {/* After arrow, round brakets need to be use so that it is interpret as a component */}
+                {this.state.menu.map((meal) => (
+                    <Item key={meal.id}
                     title={meal.data().name} style={global_style.item} />
-                })}
+                ))}
 
             </ScrollView>
         )

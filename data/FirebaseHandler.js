@@ -194,7 +194,7 @@ export const addRestaurant = (latitude, longitude) => {
     console.log("Restaurant added")
 }
 
-export const addMeal = (user, mealToAdd) => {
+export const addMeal = (user, mealToAdd, dietTags) => {
     // Prevent the default form redirect
     //meal.preventDefault();
     // Write a new message to the database collection menu for this restaurant
@@ -202,6 +202,7 @@ export const addMeal = (user, mealToAdd) => {
     console.log(mealToAdd)
     firebase.firestore().collection('restaurant').doc(uid).collection('menu').doc().set({
         name: mealToAdd,
+        dietTags: dietTags,
         lastModified: Date.now()
     })
     //firestore.FieldValue.serverTimestamp()
