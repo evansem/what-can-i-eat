@@ -50,8 +50,10 @@ class RestaurantsMap extends Component {
                             }}>
                             <Callout onPress={() => {
                                 //Once users click on the name label show the menu
-                                console.log("Callout")
-                                //{this.props.navigation}
+                                //console.log("Callout")
+                                this.props.navigation.navigate('Menu', {
+                                    restaurant: marker,
+                                })
                             }}>
                                 {/* Label shown when the marker is clicked */}
                                 <Text>{marker.data().name}</Text>

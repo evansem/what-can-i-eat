@@ -163,6 +163,19 @@ export const getRestaurants = async () => {
     return querySnapshot.docs;
 }
 
+export const getMenu = async (restaurantID) => {
+    //const q = query(firebase.firestore().collection('restaurant')); //, where("capital", "==", true)
+
+    const querySnapshot = await firebase.firestore()
+    .collection('restaurant').doc(restaurantID)
+    .collection('menu').get()//await getDocs(q);
+    // querySnapshot.docs.map((doc) => {
+    //     // doc.data() is never undefined for query doc snapshots
+    //     console.log(doc.id + " => " + JSON.stringify(doc.data()));
+    // });
+    return querySnapshot.docs;
+}
+
 
 
 export const addRestaurant = (latitude, longitude) => {
