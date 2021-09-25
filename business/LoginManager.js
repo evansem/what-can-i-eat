@@ -103,11 +103,17 @@ export const getDisplayName = (user) => {
 // }
 
 export const loginLabel = (user) => {
-    if (user != null) return <DrawerItem
-        label={"Logged in as: " + user.displayName + " (restaurant access)"} />
-        //
-        // style={{alignContent: 'center'}}/>
-    //         onPress={() => console.log("hi")}
+    return (
+        <ShowIfLoggedIn pageSupplier={
+            (user) => {
+                return (
+                    <DrawerItem label={"Logged in as: " + user.displayName + " (restaurant access)"} />
+                )
+            }
+
+        } orElse={<></>
+        } />
+    )
 }
 
 export default UserProvider;
