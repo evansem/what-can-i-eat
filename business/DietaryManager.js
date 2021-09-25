@@ -3,6 +3,9 @@ import { Text, TouchableOpacity } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { loadPreferences, savePreferences, outputFilename } from '../data/DietaryHandler'
 
+/**
+ * Mechanism adopted to share dietary information across the app
+ */
 export const DietContext = createContext({
     //The checkbox data is stored in the diet json file
     data: [],
@@ -93,7 +96,6 @@ export class DietryOptions extends Component {
     }
 
     render() {
-
         return (this.props.dietData.map((item, key) =>
             <TouchableOpacity style={{ flexDirection: "row" }}
                 key={key}

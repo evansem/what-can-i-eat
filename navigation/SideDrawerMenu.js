@@ -1,9 +1,9 @@
 import React from 'react';
-import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from "../screens/Home"
 import Search from "../screens/Search"
-import { UserContext, loginLabel, ShowIfLoggedIn } from '../business/LoginManager';
+import { loginLabel, ShowIfLoggedIn } from '../business/LoginManager';
 import SmallLogo from '../components/SmallLogo';
 import { primaryColor } from '../constants/style';
 import UpdateDietNavi from './UpdateDietNavi';
@@ -13,6 +13,9 @@ import Menu from '../screens/Menu';
 
 const Drawer = createDrawerNavigator();
 
+/**
+ * Main navigation accessible through the hamburger menu which will always be displayed
+ */
 export default function SideDrawerMenu() {
     return (
         <NavigationContainer>

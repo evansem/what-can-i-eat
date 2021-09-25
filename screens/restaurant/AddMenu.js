@@ -8,6 +8,10 @@ import InlineError from '../../components/InlineError';
 import { DietryOptions } from '../../business/DietaryManager';
 import { extractSelection, getDefaultDietTags } from '../../data/DietaryHandler'
 
+/**
+ * This page distates how will a restaurant owner interact with the app 
+ * to add a meal to their restaurant's menu
+ */
 const AddMenu = ({ navigation }) => {
 
   const defaultTags = getDefaultDietTags();

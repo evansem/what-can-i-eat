@@ -1,6 +1,9 @@
 import React from 'react';
 import { Image } from 'react-native';
 
+/**
+ * Logo styled to be displayed in the center of the navigation bar 
+ */
 const SmallLogo = () => <Image
 resizeMode="contain"
 style={{

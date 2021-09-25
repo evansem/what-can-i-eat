@@ -5,7 +5,7 @@ import Login from '../screens/restaurant/Login';
 import SignupScreen from '../screens/restaurant/SignUp';
 import Restaurant from '../screens/restaurant/Restaurant';
 import Menu from '../screens/Menu';
-import ConfirmationPage, { SuccessPage } from '../components/Confirmation';
+import { SuccessPage } from '../components/Confirmation';
 
 const Stack = createNativeStackNavigator();
 

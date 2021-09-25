@@ -139,9 +139,9 @@ export const emailSignup = async (name, address, email, password, onSuccess) => 
 
 /**
  * Get restaurant general data 
- * Usual use:
- *  .map((doc) => {
- *      doc.data() 
+ * Usual use:  
+ * .map((doc) => { doc.data() ... })
+ * data is not passed directly so that the id can also be accessed
  */
 export const getRestaurants = async () => {
     const querySnapshot = await firebase.firestore().collection('restaurant').get()
