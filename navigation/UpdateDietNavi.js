@@ -5,6 +5,11 @@ import DietDisclamer from '../screens/diet/DietDisclaimer';
 
 const Stack = createNativeStackNavigator();
 
+/**
+ * A sub navigation to be use nested the main drawer navigation.
+ * It facilitates the transaction between sever screens all realated to
+ * the operations to manage the user diet
+ */
 const UpdateDietNavi = () => {
   return (
     <Stack.Navigator
@@ -14,9 +19,6 @@ const UpdateDietNavi = () => {
         component={Preferences}
         options={{
           title: 'Update Your Diet',
-          // headerStyle: {
-          //   backgroundColor: '#09f',
-          // },
         }}
       />
       <Stack.Screen 

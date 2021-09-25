@@ -17,13 +17,12 @@ export default function SideDrawerMenu() {
     return (
         <NavigationContainer>
             <Drawer.Navigator
-                initialRouteName="Menu" //"Home" 
+                initialRouteName="Home" 
                 backBehavior="history"
                 screenOptions={{
                     headerTitle: props => <SmallLogo {...props} />,
                     headerTitleAlign: 'center',
                     headerTitleStyle: { alignSelf: 'center' },
-                    //headerTitleStyle: {textAlign: 'center', justifyContent: 'center', alignItems: 'center'},
                     drawerActiveTintColor: primaryColor,
                 }}>
                 <Drawer.Screen name="Home" component={HomeScreen} />

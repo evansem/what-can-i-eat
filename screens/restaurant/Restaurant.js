@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { signInWithEmail } from '../../data/FirebaseHandler';
-import { global_style, primaryColor, secondaryColor } from '../../constants/style';
+import React from 'react';
+import { SafeAreaView } from 'react-native';
+import { global_style } from '../../constants/style';
 import Login from './Login';
-import { ShowIfLoggedIn, UserContext } from '../../business/LoginManager';
+import { ShowIfLoggedIn } from '../../business/LoginManager';
 import Item from '../../components/Item';
 import LargeButton from '../../components/LargeButton';
 

@@ -37,8 +37,6 @@ class RestaurantsMap extends Component {
 
                     //Adds Marker for user's location
                     showsUserLocation={true}>
-                        {this.state.stopMarkers.map((marker) => {
-                            console.log(marker.id)})}
                     
                     {this.state.stopMarkers.map((marker) => (
                         //Generate stop markers for all the data loaded from database
@@ -55,7 +53,6 @@ class RestaurantsMap extends Component {
                             }}>
                             <Callout onPress={() => {
                                 //Once users click on the name label show the menu
-                                //console.log("Callout")
                                 this.props.navigation.navigate('Menu', {
                                     restaurant: marker,
                                 })
@@ -69,7 +66,6 @@ class RestaurantsMap extends Component {
             </View >
         )
     }
-
 }
 
 //Specific style only for this page

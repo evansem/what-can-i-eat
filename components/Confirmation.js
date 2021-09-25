@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, Button, View } from 'react-native';
+import { Button, View } from 'react-native';
 import { global_style, primaryColor } from '../constants/style';
 import Item from '../components/Item';
 

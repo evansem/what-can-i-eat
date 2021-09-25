@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { TextInput, Text, View, Button } from 'react-native';
 import { signInWithEmail } from '../../data/FirebaseHandler';
 import { global_style, primaryColor, secondaryColor } from '../../constants/style';
-import ErrorMessage from '../../components/ErrorMessage'
 
 const Separator = () => <View style={global_style.separator} />;
 
@@ -21,8 +20,6 @@ const Login = ({ navigation }) => {
         placeholder="Email"
         placeholderTextColor="#B1B1B1"
         returnKeyType="next"
-        //keyboardType="email-address"
-        // textContentType="emailAddress"
         value={email}
         onChangeText={newEmail => setEmail(newEmail)}
       />
@@ -36,9 +33,6 @@ const Login = ({ navigation }) => {
         value={password}
         onChangeText={p => setPassword(p)}
       />
-      {/* <ErrorMessage error="NA" visible={true}/> */}
-
-      {/* {this.renderLoading()} */}
       <Text
         style={{
           fontSize: 18,

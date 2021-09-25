@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { global_style, primaryColor } from '../constants/style';
-//import Dimensions from "react-native";
+import { primaryColor } from '../constants/style';
 
 const LargeButton = ({ onPress, title }) => {
     return (
@@ -23,7 +22,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 30,
-        //paddingHorizontal: 32,
         borderRadius: 4,
         backgroundColor: primaryColor,
         width: 300,

@@ -1,11 +1,9 @@
-import React, { Component, useState } from 'react';
-import { StyleSheet, TextInput, Text, View, Button, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { getAddressCoordinates, getMenu, signInWithEmail } from '../../data/FirebaseHandler';
-import { global_style, primaryColor, secondaryColor } from '../../constants/style';
-import Login from './Login';
-import { ShowIfLoggedIn, UserContext } from '../../business/LoginManager';
+import React, { Component } from 'react';
+import { View, Button, ScrollView, SafeAreaView } from 'react-native';
+import { getAddressCoordinates, getMenu } from '../../data/FirebaseHandler';
+import { global_style } from '../../constants/style';
+import { ShowIfLoggedIn } from '../../business/LoginManager';
 import Item from '../../components/Item';
-import LargeButton from '../../components/LargeButton';
 import { ListTags } from '../../components/SelectedDiet';
 
 const Menu = ({ route, navigation }) => {
@@ -40,7 +38,9 @@ const Menu = ({ route, navigation }) => {
     }
 }
 
-//const MenuTable = ({route}) => {
+/**
+ * Displays a formatted list of meal
+ */
 class MenuTable extends Component {
     constructor(props) {
         super(props)
@@ -63,15 +63,6 @@ class MenuTable extends Component {
     }
 
     render() {
-
-        //console.log(JSON.stringify(this.props.route))
-
-
-
-
-        //console.log(JSON.stringify(data))
-
-
         const data = this.props.route.params.restaurant.data()
         return (
             <ScrollView>
@@ -86,8 +77,6 @@ class MenuTable extends Component {
                     </View>
                     
                 ))}
-
-
             </ScrollView>
         )
     }

@@ -1,15 +1,22 @@
 import React from "react";
-import { Button, View, Text, SafeAreaView } from "react-native";
+import { Button, Text, SafeAreaView } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { DietContext, exportDiet } from "../../business/DietaryManager";
 import { SelectedDiet } from "../../components/SelectedDiet";
 import { global_style, primaryColor } from "../../constants/style";
 
+/**
+ * Dietary acknowledgement page, after users select their diet, 
+ * it informs them that for their physical safety, 
+ * they should still inform waiters of their allergies. 
+ * Important for avoiding that a possible mistake in the app 
+ * development or use ends up having severe consequences.
+ */
 const DietDisclaimer = ({ navigation }) => {
     return (
         <DietContext.Consumer>
 
-            {({ data, updateData, updateSelected }) => (
+            {({ data, updateSelected }) => (
                 <SafeAreaView style={global_style.softContainer}>
                     <ScrollView>
                         <SelectedDiet compact={false} />
@@ -36,18 +43,5 @@ const DietDisclaimer = ({ navigation }) => {
         </DietContext.Consumer >
     )
 }
-
-// export const Disclamer = (message, acknowledgement, action, redirect) => {
-//     return (
-//         <View>
-//             <Text>{message}</Text>
-//             <Text>{acknowledgement}</Text>
-
-//             <Button onPress={() => { action; redirect }} title="I Acknoledge" color={primaryColor} />
-
-
-//         </View>
-//     )
-// }
 
 export default DietDisclaimer

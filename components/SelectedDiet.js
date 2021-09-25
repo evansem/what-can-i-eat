@@ -1,7 +1,7 @@
 import React from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
+import { SafeAreaView, View, StyleSheet, Text } from 'react-native';
 import { DietContext } from '../business/DietaryManager';
-import { global_style, primaryColor } from '../constants/style';
+import { global_style } from '../constants/style';
 import Item from './Item';
 
 export const NoSelection = ({ selected }) => {
@@ -9,14 +9,14 @@ export const NoSelection = ({ selected }) => {
         return <Item title="No special diet" style={styles.item} />
     }
     return (null)
-    //<></>
 }
 
+/**
+ * Display the user diet based on the tags which have been selected
+ */
 export const SelectedDiet = ({ compact }) => {
-
     return (
         <DietContext.Consumer>
-
             {({ selected }) => (
                 <ListTags tags={selected} compact={compact} title="Your dietary tags:"/>
             )}
@@ -24,6 +24,10 @@ export const SelectedDiet = ({ compact }) => {
     )
 }
 
+/**
+ * Display a list of dietary tags.
+ * The list should simply contain the names
+ */
 export const ListTags = ({ tags, compact , title}) => {
     if (!title) {
         //Default value

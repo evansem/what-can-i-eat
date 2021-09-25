@@ -6,8 +6,6 @@ import { emailSignup } from '../../data/FirebaseHandler'
 import Item from '../../components/Item';
 import SubmitFormButton from '../../components/SubmitFormButton';
 
-//const auth = firebase.auth();
-
 const SignupScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [location, setLocation] = useState(null);
@@ -63,14 +61,6 @@ const SignupScreen = ({ navigation }) => {
         )}
           dataRequired={[name, location, email, password]} />
 
-        {/* <Text style={styles.errorText}>{signupError}</Text> */}
-        {/* <ErrorMessage error={signupError} visible={signupError} /> */}
-        {/* <Text>{signupError ? <ErrorMessage error={signupError} visible={true} /> : ''}</Text> */}
-        {/* <Button onPress={this.getSelectedDiet()} title="Submit" color={primaryColor} /> */}
-        {/* <InlineError message={requires([name, location, email, password] )} />
-        
-        <Button title='Signup' color={primaryColor}
-          onPress={() => emailSignup(name, location, email, password)}      /> */}
         <View style={global_style.separator} />
         <Button title='Go to Login' color={secondaryColor} onPress={() => navigation.navigate('Restaurant Login')} />
       </ScrollView>
