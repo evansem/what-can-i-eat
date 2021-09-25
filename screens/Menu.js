@@ -1,39 +1,32 @@
 import React, { Component } from 'react';
 import { View, Button, ScrollView, SafeAreaView } from 'react-native';
-import { getAddressCoordinates, getMenu } from '../../data/FirebaseHandler';
-import { global_style } from '../../constants/style';
-import { ShowIfLoggedIn } from '../../business/LoginManager';
-import Item from '../../components/Item';
-import { ListTags } from '../../components/SelectedDiet';
+import { getAddressCoordinates, getMenu } from '../data/FirebaseHandler';
+import { global_style, primaryColor } from '../constants/style';
+import { ShowIfLoggedIn } from '../business/LoginManager';
+import Item from '../components/Item';
+import { ListTags } from '../components/SelectedDiet';
 
 const Menu = ({ route, navigation }) => {
-    if (!route.params || Object.keys(route.params).length === 0) {
-        return (
-            <SafeAreaView>
-                <Item title='Select a menu from the search page' style={global_style.item} />
+    //from route to get the custom data passed though navigation use route.params
 
-                <Button title="Test" onPress={()=>getAddressCoordinates("180 The Terrace Wellington").finally()}/>
+    if (!route.params || Object.keys(route.params).length === 0) {
+        //A restaurant has not bee selected
+        return (
+            <SafeAreaView style={global_style.container}>
+                <Item title='Select a menu from the search page' style={global_style.item} />
+                <View>
+                    <Button title='Search Restaurants' color={primaryColor}
+                    onPress={() => navigation.navigate('Search')} />
+                </View>
+
             </SafeAreaView>)
     } else {
-        //route.params
+        //
         return (
-            <ShowIfLoggedIn pageSupplier={
-                (user) => {
-                    return (
-                        <SafeAreaView style={global_style.container}>
-                            {/* <Item title={user.displayName} style={global_style.item} /> */}
-                            <MenuTable route={route} />
-                        </SafeAreaView>
+            <SafeAreaView style={global_style.container}>
+                <MenuTable route={route} />
 
-                    )
-                }
-
-            } orElse={
-                <SafeAreaView style={global_style.container}>
-                    <MenuTable route={route} />
-
-                </SafeAreaView>
-            } />
+            </SafeAreaView>
         )
     }
 }
@@ -66,16 +59,16 @@ class MenuTable extends Component {
         const data = this.props.route.params.restaurant.data()
         return (
             <ScrollView>
-                <Item title={data.name} style={global_style.item} />
+                <Item title={data.name} style={[global_style.item, global_style.whiteItem]} />
 
                 {/* After arrow, round brakets need to be use so that it is interpret as a component */}
                 {this.state.menu.map((meal) => (
-                    <View>
-                        <Item key={meal.id}
-                        title={meal.data().name} style={global_style.item} />
+                    <View key={meal.id}>
+                        <Item
+                            title={meal.data().name} style={global_style.item} />
                         <ListTags tags={meal.data().dietTags} compact={true} />
                     </View>
-                    
+
                 ))}
             </ScrollView>
         )

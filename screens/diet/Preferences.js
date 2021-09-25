@@ -54,7 +54,14 @@ const Preferences = ({ navigation }) => {
                     value={suggestion}
                     onChangeText={text => setSuggestion(text)}
                 />
-                <Button onPress={() => suggestDietaryTag(suggestion)} title="Send Anonymously" color={primaryColor} />
+                <Button onPress={() => {
+                    suggestDietaryTag(suggestion)
+                    //Remmove current suggestion from input
+                    setSuggestion("")
+                     //inform user
+                    navigation.navigate("Success Page");
+                }
+                } title="Send Anonymously" color={primaryColor} />
 
 
             </ScrollView>

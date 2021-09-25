@@ -12,7 +12,7 @@ const Search = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View>
-          <Item title="Search Bar (Coming Soon)" style={[global_style.item, styles.search]} />
+          <Item title="Search Bar (Coming Soon)" style={[global_style.item, global_style.whiteItem]} />
 
           <Button
             onPress={() => alert("Not Available")}
@@ -44,10 +44,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: 0.7 * Dimensions.get('window').height,
   },
-  search: {
-    borderWidth: 0.5,
-    backgroundColor: '#FFF'
-  }
+  
 });
 
 export default Search

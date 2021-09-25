@@ -45,11 +45,6 @@ class RestaurantsMap extends Component {
                             coordinate={{
                                 latitude: parseFloat(marker.data().latitude),
                                 longitude: parseFloat(marker.data().longitude),
-                            }}
-                            onPress={() => {
-                                selectedId = "Stop"
-                                //selectItem(marker)
-                                console.log("Marker Cliked")
                             }}>
                             <Callout onPress={() => {
                                 //Once users click on the name label show the menu

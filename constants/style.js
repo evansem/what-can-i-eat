@@ -34,6 +34,10 @@ const global_style = StyleSheet.create({
   compactItem: {
     padding: 10
   },
+  whiteItem: {
+    borderWidth: 0.5,
+    backgroundColor: '#FFF'
+  },
   mainHeader: {
     fontSize: 32,
     fontWeight: "700"

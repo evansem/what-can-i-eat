@@ -9,7 +9,7 @@ import { primaryColor } from '../constants/style';
 import UpdateDietNavi from './UpdateDietNavi';
 import RestaurantPortalNavi from './RestaurantPortalNavi';
 import Logout from '../screens/restaurant/Logout';
-import Menu from '../screens/restaurant/Menu';
+import Menu from '../screens/Menu';
 
 const Drawer = createDrawerNavigator();
 
