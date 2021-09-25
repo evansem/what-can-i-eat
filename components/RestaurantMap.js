@@ -4,6 +4,9 @@ import MapView, { Callout, Marker } from 'react-native-maps';
 import { global_style, primaryColor } from "../constants/style";
 import { getRestaurants } from "../data/FirebaseHandler";
 
+/**
+ * Map used to show where restaurants which have adopted this service are
+ */
 class RestaurantsMap extends Component {
     constructor(props) {
         super(props)
@@ -11,6 +14,7 @@ class RestaurantsMap extends Component {
         let latitude = -41.28490626239493
         let longitude = 174.77791627205266
 
+        //Old fashion way of doing hooks
         this.state = {
             stopMarkers: [],
             region: {
@@ -21,7 +25,8 @@ class RestaurantsMap extends Component {
             }
         }
 
-        //Loading restaurant coordiantes and data
+        //Loading restaurant coordiantes and data, 
+        //this needs to be done in the constructor to prevent infinite loops
         getRestaurants().then(e => {         
             this.state.stopMarkers = e
             this.forceUpdate()
@@ -39,7 +44,7 @@ class RestaurantsMap extends Component {
                     showsUserLocation={true}>
                     
                     {this.state.stopMarkers.map((marker) => (
-                        //Generate stop markers for all the data loaded from database
+                        //Plot resaturent markers which were retrived from database
                         <Marker
                             key={marker.id}
                             coordinate={{

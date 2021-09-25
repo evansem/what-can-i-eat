@@ -4,6 +4,9 @@ import { DietContext } from '../business/DietaryManager';
 import { global_style } from '../constants/style';
 import Item from './Item';
 
+/**
+ * What to display when the user do no have any dietary requirements
+ */
 export const NoSelection = ({ selected }) => {
     if (selected.length == 0) {
         return <Item title="No special diet" style={styles.item} />

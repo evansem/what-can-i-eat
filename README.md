@@ -6,6 +6,8 @@ This app provides an interface to view and edit menus with dietary tags for each
 
 Furthermore, assuming the restaurant owners enter the tags correctly, it reduces the risk that meals get served contain allergens that were not considered for example eggs in aioli sauce. As well as improving efficiency as waiters will have to do fewer trips back and forward with the kitchen when serving people with special diets. 
 
+*developed by Emanuel Evans*
+
 
 # How to run the app
 
@@ -41,16 +43,7 @@ npm install @react-navigation/native-stack
 expo install expo-location
 expo install firebase
 
-npm install
-npm install
-npm install
-npm install
-npm install
-npm install
-npm install
 ```
-
-
 
 ## Can I download the app directly into my phone?
 Unfortunatelly this app has not been publically deployed yet.

@@ -8,9 +8,7 @@ import { suggestDietaryTag } from "../../data/FirebaseHandler";
 
 /**
  * Creates the page which allows users to update the dietry preferences
- * 
- * 
- * Preferences page, allows users to update their dietary requirements and suggest some new dietary tags to add. 
+ * It also allows to suggest some new dietary tags to add. 
  * It has a simple checkbox look so users will know that they can click more than one option.
  */
 const Preferences = ({ navigation }) => {
@@ -31,10 +29,17 @@ const Preferences = ({ navigation }) => {
                 <DietContext.Consumer>
                     {({ data, updateData }) => (
                         <View style={global_style.checkboxContainer}>
+                            {/* Through a checkbox this will show what tags are currently selected 
+                                as well as allowing to change them */}
                             <DietryOptions dietData={data} updateData={updateData} />
 
-                            <Button onPress={() => navigation.push('AckDiet')} title="Submit" color={primaryColor} />
-
+                            {/* To make acknoledgement more evident add intermidiary page
+                                Before the diet is changed */}
+                            <Button onPress={
+                                () => navigation.navigate('AckDiet', {
+                                    selected: data,
+                                })
+                                } title="Submit" color={primaryColor} />
                         </View>
 
                     )}
@@ -42,6 +47,7 @@ const Preferences = ({ navigation }) => {
 
                 <View style={global_style.separator} />
 
+                {/* The following section allows to suggest a tag which will then be stored in the database */}
                 <Text style={global_style.h2}>
                     Couldn't find what you were looking for?</Text>
                 <Text style={global_style.paragraph}>
@@ -56,13 +62,12 @@ const Preferences = ({ navigation }) => {
                 />
                 <Button onPress={() => {
                     suggestDietaryTag(suggestion)
-                    //Remmove current suggestion from input
+                    //Remove current suggestion from input
                     setSuggestion("")
                      //inform user
                     navigation.navigate("Success Page");
                 }
                 } title="Send Anonymously" color={primaryColor} />
-
 
             </ScrollView>
         </SafeAreaView>

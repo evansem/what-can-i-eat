@@ -84,11 +84,8 @@ const global_style = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     textAlign: 'justify',
-    // fontWeight: "900",
     fontSize: 14
-
   },
-
   title: {
     fontSize: 20,
     textAlign: 'justify',

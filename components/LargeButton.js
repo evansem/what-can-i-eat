@@ -2,6 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { primaryColor } from '../constants/style';
 
+/**
+ * Main buttons in the home page
+ */
 const LargeButton = ({ onPress, title }) => {
     return (
         <TouchableOpacity
