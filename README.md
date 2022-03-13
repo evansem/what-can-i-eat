@@ -8,6 +8,11 @@ Furthermore, assuming the restaurant owners enter the tags correctly, it reduces
 
 *developed by Emanuel Evans*
 
+# App overview
+
+![app screenshots](wireframes/screenshots_form_app.pdf)
+
+<embed src="wireframes/screenshots_form_app.pdf" type="application/pdf">
 
 # How to run the app
 
