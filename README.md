@@ -10,9 +10,10 @@ Furthermore, assuming the restaurant owners enter the tags correctly, it reduces
 
 # App overview
 
-![app screenshots](wireframes/screenshots_form_app.pdf)
+[Check out the app's screenshots](wireframes/screenshots_form_app.pdf) to have a visual overview
 
-<embed src="wireframes/screenshots_form_app.pdf" type="application/pdf">
+You can also compare the current screens with the [original wireframes](wireframes/initial_wireframes.md)
+
 
 # How to run the app
 
